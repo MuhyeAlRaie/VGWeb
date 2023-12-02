@@ -41,7 +41,7 @@ function openSidebar(type, button) {
         }
     } else if (type === 'home') {
         // Change video source and add custom content for Home
-        changeVideo('HomeVid.mp4', button);
+        changeVideo('asset/HomeVid.mp4', button);
         sidebar.innerHTML = '<h2>Your Project on Earth</h2>' +
             '<p>We are developing a sophisticated complex tailored for individuals who appreciate contemporary urban living. This innovative concept is designed to impeccably align with the distinctive standards of Dubai.</p>' +
             '<h3>Public Places Nearby</h3>' +
@@ -50,7 +50,7 @@ function openSidebar(type, button) {
             '<p>25 <br>minutes from the airport</p>';
     } else if (type === 'features') {
         // Change video source and add buttons for features
-        changeVideo('FeaturesVid.mp4', button);
+        changeVideo('asset\FeaturesVid.mp4', button);
         var features = ['RoofTopGarden', 'PlayGround', 'Parking', 'ShoppingMall'];
         for (var j = 0; j < features.length; j++) {
             var featureButton = document.createElement('button');
@@ -76,7 +76,7 @@ function showApartmentDetails(apartmentIndex) {
 
     // Set apartment details
     // apartmentImage.src = 'apartment' + apartmentIndex + '.jpg'; // Replace with actual image path
-    apartmentImage.src = 'FloorPlane.jpg'; // Replace with actual image path
+    apartmentImage.src = 'asset\FloorPlane.jpg'; // Replace with actual image path
 
     apartmentPrice.textContent = 'Price: $250,000'; // Replace with actual price
     apartmentSurface.textContent = 'Surface: 50 m²'; // Replace with actual surface area
