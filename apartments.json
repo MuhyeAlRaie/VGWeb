@@ -1,0 +1,18 @@
+[
+    {
+      "id": 1,
+      "name": "Apartment 01",
+      "price": "$250,000",
+      "surface": "50 m²",
+      "availability": "Available",
+      "image": "apartment01.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Apartment 02",
+      "price": "$300,000",
+      "surface": "60 m²",
+      "availability": "Not Available",
+      "image": "apartment02.jpg"
+    }
+]
