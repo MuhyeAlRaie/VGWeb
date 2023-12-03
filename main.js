@@ -27,7 +27,7 @@ function openSidebar(type, button) {
 
     if (type === 'apartments') {
         // Change video source and add buttons for apartments
-        changeVideo('video1.mp4', button);
+        changeVideo('asset/HomeVid.mp4', button);
         for (var i = 1; i <= 10; i++) {
             var apartmentButton = document.createElement('button');
             apartmentButton.textContent = 'Apartment' + (i < 10 ? '0' + i : i);
