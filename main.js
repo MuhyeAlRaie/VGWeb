@@ -1,11 +1,18 @@
 // Sample JSON data for apartment details
 var apartmentData = {
     "apartment1": {
-        "video": "video1.mp4",
-        "image": "asset/FloorPlan1.jpg",
+        "video": "asset/apartmentsVid.mp4",
+        "image": "asset/FloorPlane.jpg",
         "price": "$250,000",
-        "surface": "50 m²",
+        "surface": "60 m²",
         "availability": "Available"
+    },
+    "apartment2": {
+        "video": "asset/apartmentsVid.mp4",
+        "image": "asset/FloorPlane.jpg",
+        "price": "$200,000",
+        "surface": "50 m²",
+        "availability": "Reserved"
     },
     // Add details for other apartments as needed
 };
@@ -39,7 +46,7 @@ function openSidebar(type, button) {
 
     if (type === 'apartments') {
         // Change video source and dynamically generate buttons for apartments
-        changeVideo('asset/HomeVid.mp4', button);
+        changeVideo('asset/apartmentsVid.mp4', button);
 
         // Loop through the apartmentData and generate buttons
         for (var apartmentKey in apartmentData) {
@@ -78,8 +85,19 @@ function openSidebar(type, button) {
             };
             sidebar.appendChild(featureButton);
         }
+    }else if (type === 'contact') {
+        // Change video source and add buttons for features
+        changeVideo('asset/Bgvid.mp4', button);
+        sidebar.innerHTML = '<h2>CONTACT US</h2>' +
+        '<p>We are excited to hear from you and assist with any inquiries or feedback you may have. Please do not hesitate to reach out through one of the following methods:</p>' +
+        '<h3>Our Address</h3>' +
+        '<p>Queen Rania Street,Amman ,Jordan</p>' +
+        '<h3>Email Us</h3>' +
+        '<p>MR@VORTIGATE.COM</p>' +
+        '<h3>Call Us</h3>' +
+        '<p>+966 50 971 1777</p>'+
+        '<p>+962 781313782</p>';
     }
-
     sidebar.style.display = 'block';
 }
 
