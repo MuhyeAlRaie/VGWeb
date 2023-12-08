@@ -65,6 +65,7 @@ body {
 #second-sidebar {
     position: fixed;
     overflow-y: auto;
+    background: rgba(0, 0, 0, 0.274);
     color: white;
     padding: 2em;
     box-sizing: border-box;
@@ -73,7 +74,7 @@ body {
 }
 
 #sidebar {
-    width: 30%;
+    width: 25%;
     left: 0;
     height: 100%;
 }
