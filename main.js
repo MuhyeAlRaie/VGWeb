@@ -5,14 +5,18 @@ var apartmentData = {
         "image": "asset/FloorPlane.jpg",
         "price": "$250,000",
         "surface": "60 m²",
-        "availability": "Available"
+        "availability": "Available",
+        "bedroom": "2",
+        "bathroom":"1"
     },
     "apartment2": {
         "video": "asset/apartmentsVid.mp4",
         "image": "asset/FloorPlane.jpg",
         "price": "$200,000",
         "surface": "50 m²",
-        "availability": "Reserved"
+        "availability": "Reserved",
+        "bedroom": "2",
+        "bathroom":"1"
     },
     // Add details for other apartments as needed
 };
@@ -106,6 +110,8 @@ function showApartmentDetails(apartmentKey) {
     var apartmentPrice = document.getElementById('apartment-price');
     var apartmentSurface = document.getElementById('apartment-surface');
     var apartmentAvailability = document.getElementById('apartment-availability');
+    var apartmentBedroom = document.getElementById('apartment-bedroom');
+    var apartmentBathroom = document.getElementById('apartment-bathroom');
 
     // Get the apartment details from the JSON data
     var apartmentDetails = apartmentData[apartmentKey];
@@ -115,6 +121,8 @@ function showApartmentDetails(apartmentKey) {
     apartmentPrice.textContent = 'Price: ' + apartmentDetails.price;
     apartmentSurface.textContent = 'Surface: ' + apartmentDetails.surface;
     apartmentAvailability.textContent = 'Availability: ' + apartmentDetails.availability;
+    apartmentBedroom.textContent = 'Bedroom: ' + apartmentDetails.bedroom;
+    apartmentBathroom.textContent = 'Bathroom: ' + apartmentDetails.bathroom;
 
     // Show the second sidebar
     secondSidebar.style.display = 'block';
