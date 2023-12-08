@@ -67,7 +67,6 @@ function openSidebar(type, button) {
         changeVideo('asset/HomeVid.mp4', button);
         sidebar.innerHTML = '<h2>Your Project on Earth</h2>' +
         '<p>We are developing a sophisticated complex tailored for individuals who appreciate contemporary urban living. This innovative concept is designed to impeccably align with the distinctive standards of Dubai.</p>' +
-        '<h3>Public Places Nearby</h3>' +
         '<p>4<br> minutes to the bus station</p>' +
         '<p>7<br> minutes to the shopping center</p>' +
         '<p>25 <br>minutes from the airport</p>';
