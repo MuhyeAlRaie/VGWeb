@@ -4,7 +4,7 @@ var apartmentData = {
         "video": "asset/apartmentsVid.mp4",
         "image": "asset/FloorPlane.jpg",
         "price": 250000,
-        "surface": 60,
+        "surface": 100,
         "availability": "Available",
         "bedroom": 2,
         "bathroom": 1
@@ -13,7 +13,34 @@ var apartmentData = {
         "video": "asset/apartmentsVid.mp4",
         "image": "asset/FloorPlane.jpg",
         "price": 200000,
+        "surface": 60,
+        "availability": "Reserved",
+        "bedroom": 1,
+        "bathroom": 1
+    },
+    "apartment3": {
+        "video": "asset/apartmentsVid.mp4",
+        "image": "asset/FloorPlane.jpg",
+        "price": 150000,
+        "surface": 60,
+        "availability": "Available",
+        "bedroom": 1,
+        "bathroom": 1
+    },  
+     "apartment4": {
+        "video": "asset/apartmentsVid.mp4",
+        "image": "asset/FloorPlane.jpg",
+        "price": 140000,
         "surface": 50,
+        "availability": "Available",
+        "bedroom": 1,
+        "bathroom": 1
+    },
+    "apartment5": {
+        "video": "asset/apartmentsVid.mp4",
+        "image": "asset/FloorPlane.jpg",
+        "price": 180000,
+        "surface": 80,
         "availability": "Reserved",
         "bedroom": 2,
         "bathroom": 1
