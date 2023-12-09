@@ -122,6 +122,7 @@ function openSidebar(type, button) {
             var featureButton = document.createElement('button');
             featureButton.textContent = features[j];
             featureButton.onclick = function () {
+                changeVideo('asset/Bgvid.mp4', button);
                 // Handle feature click
                 // You can customize this function to display more information about the feature
                 console.log('Feature Clicked: ' + features[j]);
