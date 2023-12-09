@@ -17,8 +17,6 @@
         Your browser does not support the video tag.
     </video>
 
-    
-
     <div id="navbar" class="position-fixed top-0 start-50 translate-middle-x z-index-1 d-flex">
         <div class="navbar-button active" onclick="openSidebar('home', this)">HOME</div>
         <div class="navbar-button" onclick="openSidebar('features', this)">FEATURES</div>
@@ -27,7 +25,26 @@
     </div>
 
     <div id="sidebar" class="position-fixed top-70 w-20">
-        <!-- Your existing sidebar content here -->
+           <!-- Filter section -->
+    <div id="filter-section" class="position-fixed top-20 start-50 translate-middle-x z-index-1 d-flex">
+        <label for="filter-price">Price:</label>
+        <input type="text" id="filter-price" placeholder="Enter price">
+
+        <label for="filter-surface">Surface:</label>
+        <input type="text" id="filter-surface" placeholder="Enter surface">
+
+        <label for="filter-availability">Availability:</label>
+        <select id="filter-availability">
+            <option value="">All</option>
+            <option value="Available">Available</option>
+            <option value="Reserved">Reserved</option>
+        </select>
+
+        <button onclick="applyFilters()">Apply Filters</button>
+    </div>
+    <!-- End Filter section -->
+
+        <!-- Apartments list will be dynamically added here -->
     </div>
 
     <div id="second-sidebar" class="position-fixed top-70 w-20">
@@ -37,7 +54,7 @@
         <p id="apartment-availability"></p>
         <p id="apartment-bedroom"></p>
         <p id="apartment-bathroom"></p>
-        
+
         <img id="apartment-image" src="" alt="Apartment Image" class="w-100">
     </div>
 

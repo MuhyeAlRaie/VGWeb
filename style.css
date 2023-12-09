@@ -36,12 +36,13 @@ body {
 }
 
 .navbar-button.active {
-    border-bottom:2px solid;
+    border-bottom: 2px solid;
 }
 
 .navbar-button {
     display: inline-block;
 }
+
 .navbar-button::after {
     content: '';
     display: block;
@@ -51,15 +52,14 @@ body {
     transition: width 0.3s;
     margin-top: 15px;
 }
+
 .navbar-button:hover::after {
     width: 100%;
 }
 
 .navbar-button.active::after {
     content: unset;
-
 }
-
 
 #sidebar,
 #second-sidebar {
@@ -71,6 +71,37 @@ body {
     box-sizing: border-box;
     display: none;
     font-family: 'Poppins', sans-serif;
+}
+
+/* #filter-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+} */
+
+#filter-section label {
+    margin-right: 10px;
+}
+
+#filter-section input,
+#filter-section select,
+#filter-section button {
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#filter-section button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+#filter-section button:hover {
+    background-color: #0056b3;
 }
 
 #sidebar {
@@ -125,11 +156,22 @@ html {
     overflow: scroll;
     overflow-x: hidden;
 }
+
 ::-webkit-scrollbar {
-    width: 0;  /* Remove scrollbar space */
-    background: transparent;  /* Optional: just make scrollbar invisible */
+    width: 0; /* Remove scrollbar space */
+    background: transparent; /* Optional: just make scrollbar invisible */
 }
+
 /* Optional: show position indicator in red */
 ::-webkit-scrollbar-thumb {
-    background: #FF0000;
+    background: #ff0000;
+}
+
+#filter-section {
+   
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
