@@ -93,6 +93,10 @@ function openSidebar(type, button) {
         '<button onclick="applyFilters()">Apply Filters</button>'+
     '</div>';
         // Loop through the apartmentData and generate buttons
+        var apartmentWrapperDiv = document.createElement('div');
+        apartmentWrapperDiv.className = 'apartment-wrapper';
+        
+        // Loop through the apartmentData and generate buttons
         for (var apartmentKey in apartmentData) {
             if (apartmentData.hasOwnProperty(apartmentKey)) {
                 var apartmentButton = document.createElement('button');
@@ -103,9 +107,14 @@ function openSidebar(type, button) {
                         showApartmentDetails(key);
                     };
                 })(apartmentKey);
-                sidebar.appendChild(apartmentButton);
+                
+                // Append each button to the wrapper div
+                apartmentWrapperDiv.appendChild(apartmentButton);
             }
         }
+        
+        // Append the wrapper div with apartment buttons to the sidebar
+        sidebar.appendChild(apartmentWrapperDiv);
     } else if (type === 'home') {
 // Change video source and add custom content for Home
 changeVideo('asset/HomeVid.mp4', button);
