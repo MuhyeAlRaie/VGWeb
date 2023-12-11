@@ -118,6 +118,11 @@ function openSidebar(type, button) {
         // Change video source and add buttons for features
         changeVideo('asset/FeaturesVid.mp4', button);
         var features = ['RoofTopGarden', 'PlayGround', 'Parking', 'ShoppingMall'];
+
+        // Create a wrapper div
+        var wrapperDiv = document.createElement('div');
+        wrapperDiv.className = 'Feature-wrapper';
+
         for (var j = 0; j < features.length; j++) {
             var featureButton = document.createElement('button');
             featureButton.textContent = features[j];
@@ -127,8 +132,14 @@ function openSidebar(type, button) {
                 // You can customize this function to display more information about the feature
                 console.log('Feature Clicked: ' + features[j]);
             };
-            sidebar.appendChild(featureButton);
+
+            // Append each button to the wrapper div
+            wrapperDiv.appendChild(featureButton);
         }
+
+        // Append the wrapper div to the sidebar
+        sidebar.appendChild(wrapperDiv);
+
     } else if (type === 'contact') {
         // Change video source and add buttons for features
         changeVideo('asset/Bgvid.mp4', button);

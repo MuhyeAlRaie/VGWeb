@@ -175,3 +175,15 @@ html {
     align-items: center;
     margin-bottom: 20px;
 }
+
+.Feature-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+}
+
+.Feature-wrapper button{
+    width: 16rem;
+}
