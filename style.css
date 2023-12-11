@@ -61,17 +61,7 @@ body {
     content: unset;
 }
 
-#sidebar,
-#second-sidebar {
-    position: fixed;
-    overflow-y: auto;
-    background: rgba(0, 0, 0, 0.129);
-    color: white;
-    padding: 2em;
-    box-sizing: border-box;
-    display: none;
-    font-family: sans-serif;
-}
+
 
 /* #filter-section {
     display: flex;
@@ -103,53 +93,7 @@ body {
     background-color: #0056b3;
 }
 
-#sidebar {
-    width: 30%;
-    left: 0;
-    height: 100%;
-}
 
-#second-sidebar {
-    width: 20%;
-    left: 20%;
-}
-
-#sidebar h2,
-#second-sidebar h2 {
-    font-size: 32px;
-}
-
-#sidebar p,
-#second-sidebar p {
-    font-size: 16px;
-}
-
-#sidebar button,
-#second-sidebar button {
-    display: block;
-    margin-bottom: 15px;
-    background: none;
-    border: 1px solid white; /* Add border style */
-    color: white;
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    font-size: 1.5em;
-    font-family: 'Poppins', sans-serif;
-}
-
-#sidebar button:hover,
-#second-sidebar button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-#second-sidebar img {
-    position: relative;
-    max-width: 100%;
-    height: 100%;
-    margin-bottom: 1em;
-}
 
 html {
     overflow: scroll;
@@ -258,4 +202,76 @@ input[type = "text"]{
      }
     }
 @media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */ }
-@media (min-width:1281px) { /* hi-res laptops and desktops */ }
+@media (min-width:1281px) { 
+    #sidebar,
+#second-sidebar {
+    position: fixed;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.129);
+    color: white;
+    padding: 2em;
+    box-sizing: border-box;
+    display: none;
+    font-family: sans-serif;
+}
+
+
+#sidebar {
+    width: 30%;
+    left: 0;
+    height: 100%;
+}
+
+#sidebar {
+    width: 30%;
+    left: 0;
+    height: 100%;
+}
+
+#second-sidebar {
+    width: 20%;
+    left: 20%;
+}
+
+#sidebar h2,
+#second-sidebar h2 {
+    font-size: 32px;
+}
+
+#sidebar p,
+#second-sidebar p {
+    font-size: 16px;
+}
+
+#sidebar button,
+#second-sidebar button {
+    display: block;
+    margin-bottom: 15px;
+    background: none;
+    border: 1px solid white; /* Add border style */
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-size: 1.5em;
+    font-family: 'Poppins', sans-serif;
+}
+
+#sidebar button:hover,
+#second-sidebar button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+#second-sidebar img {
+    position: relative;
+    max-width: 100%;
+    height: 100%;
+    margin-bottom: 1em;
+}
+    
+
+.navbar-button {
+    text-align: center;
+}
+    /* hi-res laptops and desktops */ }
