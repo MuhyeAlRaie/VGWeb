@@ -107,13 +107,23 @@ function openSidebar(type, button) {
             }
         }
     } else if (type === 'home') {
-        // Change video source and add custom content for Home
-        changeVideo('asset/HomeVid.mp4', button);
-        sidebar.innerHTML = '<h2>Your Project on Earth</h2>' +
-            '<p>We are developing a sophisticated complex tailored for individuals who appreciate contemporary urban living. This innovative concept is designed to impeccably align with the distinctive standards of Dubai.</p>' +
-            '<p>4<br> minutes to the bus station</p>' +
-            '<p>7<br> minutes to the shopping center</p>' +
-            '<p>25 <br>minutes from the airport</p>';
+// Change video source and add custom content for Home
+changeVideo('asset/HomeVid.mp4', button);
+
+var wrapperDiv = document.createElement('div');
+wrapperDiv.className = 'home-wrapper';
+
+// Set innerHTML for the wrapper div
+wrapperDiv.innerHTML = '<h2>Your Project on Earth</h2>' +
+    '<p>We are developing a sophisticated complex tailored for individuals who appreciate contemporary urban living. This innovative concept is designed to impeccably align with the distinctive standards of Dubai.</p>' +
+    '<div class="statistics-wrapper">' +
+    '<div class="item"><div class="number">4</div><div class="description">minutes to the bus station</div></div>' +
+    '<div class="item"><div class="number">7</div><div class="description">minutes to the shopping center</div></div>' +
+    '<div class="item"><div class="number">25</div><div class="description">minutes from the airport</div></div>' +
+    '</div>';
+
+// Append the wrapper div to the sidebar
+sidebar.appendChild(wrapperDiv);
     } else if (type === 'features') {
         // Change video source and add buttons for features
         changeVideo('asset/FeaturesVid.mp4', button);

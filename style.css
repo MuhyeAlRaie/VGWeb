@@ -70,7 +70,7 @@ body {
     padding: 2em;
     box-sizing: border-box;
     display: none;
-    font-family: 'Poppins', sans-serif;
+    font-family: sans-serif;
 }
 
 /* #filter-section {
@@ -105,7 +105,7 @@ body {
 }
 
 #sidebar {
-    width: 25%;
+    width: 30%;
     left: 0;
     height: 100%;
 }
@@ -186,4 +186,35 @@ html {
 
 .Feature-wrapper button{
     width: 16rem;
+}
+
+.home-wrapper {
+  margin-top: 7rem;
+  margin-left: 1rem;
+}
+
+#sidebar .home-wrapper p {
+    font-size: 12px;
+}
+
+.home-wrapper h2{
+    text-transform: uppercase;
+    max-width: 80%;
+}
+
+.home-wrapper .statistics-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-wrapper .statistics-wrapper .item {
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    flex-flow: column;
+}
+.home-wrapper .statistics-wrapper .item .number {
+    font-weight: bold;
+    font-size: 34px;
 }
