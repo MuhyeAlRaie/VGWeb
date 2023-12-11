@@ -280,3 +280,11 @@ input[type = "text"]{
 .apartment-wrapper button{
     width: 20rem;
 }
+
+.contact-wrapper {
+    display: flex;
+    flex-flow: column;
+    align-items: baseline;
+    justify-content: center;
+    height: 100%;
+}

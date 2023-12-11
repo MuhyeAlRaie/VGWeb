@@ -164,15 +164,24 @@ sidebar.appendChild(wrapperDiv);
     } else if (type === 'contact') {
         // Change video source and add buttons for features
         changeVideo('asset/Bgvid.mp4', button);
-        sidebar.innerHTML = '<h2>CONTACT US</h2>' +
+
+        // Create a wrapper div for contact information
+        var contactWrapperDiv = document.createElement('div');
+        contactWrapperDiv.className = 'contact-wrapper';
+
+        // Set innerHTML for the wrapper div
+        contactWrapperDiv.innerHTML = '<h2>CONTACT US</h2>' +
             '<p>We are excited to hear from you and assist with any inquiries or feedback you may have. Please do not hesitate to reach out through one of the following methods:</p>' +
             '<h3>Our Address</h3>' +
-            '<p>Queen Rania Street,Amman ,Jordan</p>' +
+            '<p>Queen Rania Street, Amman, Jordan</p>' +
             '<h3>Email Us</h3>' +
             '<p>MR@VORTIGATE.COM</p>' +
             '<h3>Call Us</h3>' +
             '<p>+966 50 971 1777</p>' +
             '<p>+962 781313782</p>';
+
+        // Append the wrapper div with contact information to the sidebar
+        sidebar.appendChild(contactWrapperDiv);
     }
     sidebar.style.display = 'block';
 }
