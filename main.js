@@ -121,7 +121,7 @@ wrapperDiv.innerHTML = '<h2>Your Project on Earth</h2>' +
     '<div class="item"><div class="number">7</div><div class="description">minutes to the shopping center</div></div>' +
     '<div class="item"><div class="number">25</div><div class="description">minutes from the airport</div></div>' +
     '</div>'+
-    '<div class="svg-with-text-wrapper"><img class="your-svg-class" src="asset/location-sign-svgrepo-com.svg" alt="Your SVG"><span class="svg-text">Your Text Here</span></div>';
+    '<div class="svg-with-text-wrapper"><img class="your-svg-class" src="asset/location-sign-svgrepo-com.svg" alt="Your SVG"><span class="svg-text">Riyadh, saudi arabia</span></div>';
     ;
 
 // Append the wrapper div to the sidebar
