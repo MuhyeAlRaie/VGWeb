@@ -84,13 +84,13 @@ body {
 }
 
 #filter-section button {
-    background-color: #007bff;
+    background-color: #007bff00;
     color: white;
     cursor: pointer;
 }
 
 #filter-section button:hover {
-    background-color: #0056b3;
+    background-color: #0057b300;
 }
 
 
@@ -133,11 +133,13 @@ html {
 
 #sidebar .home-wrapper p {
     font-size: 12px;
+    color: aliceblue;
 }
 
 .home-wrapper h2{
     text-transform: uppercase;
     max-width: 80%;
+    color: aliceblue;
 }
 
 .home-wrapper .statistics-wrapper {
@@ -151,6 +153,7 @@ html {
     align-items: start;
     justify-content: center;
     flex-flow: column;
+    color: aliceblue;
 }
 .home-wrapper .statistics-wrapper .item .number {
     font-weight: bold;
@@ -183,6 +186,7 @@ input[type = "text"]{
 
 .svg-with-text-wrapper {
     margin-top: 3rem;
+    color: aliceblue;
 }
 
 @media (min-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */ }
@@ -260,7 +264,7 @@ input[type = "text"]{
 
 #sidebar button:hover,
 #second-sidebar button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0);
 }
 
 #second-sidebar img {
@@ -287,4 +291,5 @@ input[type = "text"]{
     align-items: baseline;
     justify-content: center;
     height: 100%;
+    color: aliceblue;
 }
