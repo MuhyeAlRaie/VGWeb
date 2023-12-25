@@ -15,8 +15,9 @@ app.get('/api/data', (req, res) => {
     res.json({ message: 'Data retrieved successfully' });
   });
 
-  const mongoose = require('mongoose');
-const MONGODB_URI = 'your-mongodb-uri';
+  
+const mongoose = require('mongoose');
+const MONGODB_URI = 'mongodb+srv://admin:ae4EMn4nj7kxdkxE@cluster0.2qj4rzj.mongodb.net/?retryWrites=true&w=majority';
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
