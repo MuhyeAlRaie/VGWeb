@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
+    console.log("sss");
+
     const loginForm = document.getElementById('loginForm');
     const errorMessage = document.getElementById('error-message');
 

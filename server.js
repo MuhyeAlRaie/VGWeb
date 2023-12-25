@@ -25,7 +25,7 @@ db.once('open', async () => {
   
 
   // Create a user record
-  const username = 'test12';
+  const username = 'yousef1';
   const password = '123';
 
   // Hash the password before storing it
