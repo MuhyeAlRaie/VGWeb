@@ -24,17 +24,17 @@ db.once('open', async () => {
   console.log('Connected to MongoDB');``
   
 
-  // Create a user record
-  const username = 'yousef1';
-  const password = '123';
+  // // Create a user record
+  // const username = 'yousef1';
+  // const password = '123';
 
-  // Hash the password before storing it
-  const hashedPassword = await bcrypt.hash(password, 10);
+  // // Hash the password before storing it
+  // const hashedPassword = await bcrypt.hash(password, 10);
 
-  const newUser = new User({ username, password: hashedPassword });
-  await newUser.save();
+  // const newUser = new User({ username, password: hashedPassword });
+  // await newUser.save();
 
-  console.log('User record created successfully');
+  // console.log('User record created successfully');
   // Login route
   app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;

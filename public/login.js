@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => {
             if (response.ok) {
                 // Login successful
-                window.location.href = '/dashboard.html'; // Redirect to dashboard or another page
+                window.location.href = 'dashboard/dashboard.html'; // Redirect to dashboard or another page
             } else {
                 // Login failed
                 return response.json();
