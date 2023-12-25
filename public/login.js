@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
-        console.log(username);
         // Send login request to your server
         fetch('/api/login', {
             method: 'POST',

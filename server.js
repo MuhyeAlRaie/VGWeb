@@ -25,16 +25,17 @@ db.once('open', async () => {
   
 
   // // Create a user record
-  // const username = 'yousef1';
+  // const username = 'yousef maraqa';
   // const password = '123';
 
   // // Hash the password before storing it
   // const hashedPassword = await bcrypt.hash(password, 10);
 
-  // const newUser = new User({ username, password: hashedPassword });
+  // const newUser = new User({ username, password: hashedPassword,phone_number:'0786197619',email:'yousefmaraqa98@gmail.com',position:'DEV' });
   // await newUser.save();
 
-  // console.log('User record created successfully');
+
+  console.log('User record created successfully');
   // Login route
   app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
@@ -79,4 +80,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Serve the login HTML file
 app.get('/login.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
