@@ -1,7 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const User = require('./models/User'); // Adjust the path as needed
+const bcrypt = require('bcrypt');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3007;
 
 app.use(bodyParser.json());
 
@@ -27,3 +29,36 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
   console.log('Connected to MongoDB');
 });
+
+// Login route
+app.post('/api/login', async (req, res) => {
+    const { username, password } = req.body;
+  
+    try {
+      // Find the user by username
+      const user = await User.findOne({ username });
+  
+      // Check if the user exists
+      if (!user) {
+        return res.status(401).json({ error: 'Invalid username or password' });
+      }
+  
+      // Compare the provided password with the stored hashed password
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+  
+      if (isPasswordValid) {
+        // Password is valid, you can generate a token here for authentication
+        res.status(200).json({ message: 'Login successful' });
+      } else {
+        // Password is invalid
+        res.status(401).json({ error: 'Invalid username or password' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
