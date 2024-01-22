@@ -283,48 +283,6 @@ function updateSidebar(apartments) {
 }
 
 
-// function openIframe() {
-//     // Create an iframe element
-//     var iframe = document.createElement('iframe');
-//     iframe.src = 'https://momento360.com/e/u/a9b53aa8f8b0403ba7a4e18243aabc66'; // Set the URL for your iframe content
-//     iframe.width = '1000'; // Set the width of the iframe
-//     iframe.height = '800'; // Set the height of the iframe
-
-//     // Create a container div for the iframe and button
-//     var container = document.createElement('div');
-//     container.className = 'iframe-container';
-
-//     // Create a close button
-//     var closeButton = document.createElement('button');
-//     closeButton.textContent = 'Close';
-//     closeButton.onclick = function () {
-//         document.body.removeChild(container);
-//     };
-
-//     // Append the iframe and close button to the container
-//     container.appendChild(iframe);
-//     container.appendChild(closeButton);
-
-//     // Append the container to the body
-//     document.body.appendChild(container);
-
-//     // Center the container on the screen
-//     container.style.position = 'fixed';
-//     container.style.top = '50%';
-//     container.style.left = '50%';
-//     container.style.transform = 'translate(-50%, -50%)';
-//     container.style.zIndex = '9999';
-
-//     // Style the iframe
-//     iframe.style.width = '1000';
-//     iframe.style.height = '800';
-//     iframe.style.border = 'none';
-
-//     // Style the close button
-//     closeButton.style.position = 'absolute';
-//     closeButton.style.top = '10px';
-//     closeButton.style.right = '10px';
-// }
 
 
 
