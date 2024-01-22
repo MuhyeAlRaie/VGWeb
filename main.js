@@ -281,37 +281,37 @@ function updateSidebar(apartments) {
         }
     }
 }
-function openIframe() {
-    // Create an iframe element
-    var iframe = document.createElement('iframe');
-    iframe.src = 'https://momento360.com/e/u/a9b53aa8f8b0403ba7a4e18243aabc66'; // Set the URL for your iframe content
-    iframe.width = '800'; // Set the width of the iframe
-    iframe.height = '600'; // Set the height of the iframe
+// function openIframe() {
+//     // Create an iframe element
+//     var iframe = document.createElement('iframe');
+//     iframe.src = 'https://momento360.com/e/u/a9b53aa8f8b0403ba7a4e18243aabc66'; // Set the URL for your iframe content
+//     iframe.width = '800'; // Set the width of the iframe
+//     iframe.height = '600'; // Set the height of the iframe
 
-    // Create a container div for the iframe
-    var iframeContainer = document.createElement('div');
-    iframeContainer.className = 'iframe-container';
+//     // Create a container div for the iframe
+//     var iframeContainer = document.createElement('div');
+//     iframeContainer.className = 'iframe-container';
 
-    // Append the iframe to the container
-    iframeContainer.appendChild(iframe);
+//     // Append the iframe to the container
+//     iframeContainer.appendChild(iframe);
 
-    // Append the container to the body
-    document.body.appendChild(iframeContainer);
+//     // Append the container to the body
+//     document.body.appendChild(iframeContainer);
 
-    // Center the iframe on the screen
-    iframeContainer.style.position = 'fixed';
-    iframeContainer.style.top = '50%';
-    iframeContainer.style.left = '50%';
-    iframeContainer.style.transform = 'translate(-50%, -50%)';
-    iframeContainer.style.zIndex = '9999';
+//     // Center the iframe on the screen
+//     iframeContainer.style.position = 'fixed';
+//     iframeContainer.style.top = '50%';
+//     iframeContainer.style.left = '50%';
+//     iframeContainer.style.transform = 'translate(-50%, -50%)';
+//     iframeContainer.style.zIndex = '9999';
 
-    // Add a close button to the iframe
-    var closeButton = document.createElement('button');
-    closeButton.textContent = 'Close';
-    closeButton.onclick = function () {
-        document.body.removeChild(iframeContainer);
-    };
+//     // Add a close button to the iframe
+//     var closeButton = document.createElement('button');
+//     closeButton.textContent = 'Close';
+//     closeButton.onclick = function () {
+//         document.body.removeChild(iframeContainer);
+//     };
 
-    // Append the close button to the container
-    iframeContainer.appendChild(closeButton);
-}
+//     // Append the close button to the container
+//     iframeContainer.appendChild(closeButton);
+// }
