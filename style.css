@@ -293,3 +293,10 @@ input[type = "text"]{
     height: 100%;
     color: aliceblue;
 }
+
+.iframe-container {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+}
