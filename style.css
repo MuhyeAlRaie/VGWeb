@@ -295,8 +295,8 @@ input[type = "text"]{
 }
 
 .iframe-container {
-    background-color: #fff;
+    background-color: rgba(0, 0, 0, 0.129);
     border: 1px solid #ccc;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    padding: 20px;
+    padding: 10px;
 }
