@@ -7,7 +7,8 @@ var apartmentData = {
         "surface": 100,
         "availability": "Available",
         "bedroom": 2,
-        "bathroom": 1
+        "bathroom": 1,
+        "iframeSrc": "https://momento360.com/e/u/a9b53aa8f8b0403ba7a4e18243aabc66"
     },
     "apartment2": {
         "video": "asset/apartmentsVid.mp4",
@@ -16,7 +17,8 @@ var apartmentData = {
         "surface": 60,
         "availability": "Reserved",
         "bedroom": 1,
-        "bathroom": 1
+        "bathroom": 1,
+        "iframeSrc": "https://www.example.com/your_iframe_url_here"
     },
     "apartment3": {
         "video": "asset/apartmentsVid.mp4",
@@ -25,7 +27,8 @@ var apartmentData = {
         "surface": 60,
         "availability": "Available",
         "bedroom": 1,
-        "bathroom": 1
+        "bathroom": 1,
+        "iframeSrc": "https://www.example.com/your_iframe_url_here"
     },  
      "apartment4": {
         "video": "asset/apartmentsVid.mp4",
@@ -34,7 +37,8 @@ var apartmentData = {
         "surface": 50,
         "availability": "Available",
         "bedroom": 1,
-        "bathroom": 1
+        "bathroom": 1,
+        "iframeSrc": "https://www.example.com/your_iframe_url_here"
     },
     "apartment5": {
         "video": "asset/apartmentsVid.mp4",
@@ -43,7 +47,8 @@ var apartmentData = {
         "surface": 80,
         "availability": "Reserved",
         "bedroom": 2,
-        "bathroom": 1
+        "bathroom": 1,
+        "iframeSrc": "https://www.example.com/your_iframe_url_here"
     },
     // Add details for other apartments as needed
 };
@@ -217,7 +222,29 @@ function showApartmentDetails(apartmentKey) {
 
     // Hide the sidebar
     sidebar.style.display = 'block';
+
+     // Check if there is an iframe source for the virtual tour
+     if (apartmentDetails.iframeSrc) {
+        // Remove the previous "Virtual Tour" button if it exists
+        var previousVirtualTourButton = document.getElementById('virtualTourButton');
+        if (previousVirtualTourButton) {
+            secondSidebar.removeChild(previousVirtualTourButton);
+        }
+
+        // Create a "Virtual Tour" button
+        var virtualTourButton = document.createElement('button');
+        virtualTourButton.id = 'virtualTourButton';
+        virtualTourButton.textContent = 'Virtual Tour';
+        virtualTourButton.onclick = function () {
+            openIframe(apartmentDetails.iframeSrc);
+        };
+
+        // Append the "Virtual Tour" button to the second sidebar
+        secondSidebar.appendChild(virtualTourButton);
+    }
+
 }
+
 
 // Function to apply filters and update the list of apartments
 function applyFilters() {
@@ -316,10 +343,10 @@ function updateSidebar(apartments) {
 //     iframeContainer.appendChild(closeButton);
 // }
 
-function openIframe() {
+function openIframe(iframeSrc) {
     // Create an iframe element
     var iframe = document.createElement('iframe');
-    iframe.src = 'https://momento360.com/e/u/a9b53aa8f8b0403ba7a4e18243aabc66'; // Set the URL for your iframe content
+    iframe.src = iframeSrc;
     iframe.width = '1000'; // Set the width of the iframe (adjust as needed)
     iframe.height = '800'; // Set the height of the iframe (adjust as needed)
 
@@ -348,6 +375,13 @@ function openIframe() {
     container.style.transform = 'translate(-50%, -50%)';
     container.style.zIndex = '9999';
 
+    // Set the innerHTML of the container
+    container.innerHTML = '';
+
+    // Append the iframe and close button to the container
+    container.appendChild(iframe);
+    container.appendChild(closeButton);
+
     // Style the iframe
     iframe.style.width = '1000';
     iframe.style.height = '800';
@@ -363,4 +397,5 @@ function openIframe() {
     closeButton.style.color = '#000'; // Set the color of the "X"
     closeButton.style.cursor = 'pointer';
 }
+
 
