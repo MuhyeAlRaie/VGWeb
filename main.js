@@ -296,24 +296,36 @@ function applyFilters() {
 // Function to update the sidebar with the filtered apartments
 function updateSidebar(apartments) {
     var sidebar = document.getElementById('sidebar');
+    
+    // Create a wrapper div for apartments
+    var apartmentWrapper = document.createElement('div');
+    apartmentWrapper.classList = 'apartment-wrapper';
+    
+    // Clear previous content
+    sidebar.innerHTML = '';
 
-    sidebar.innerHTML ='<div id="filter-section" class="position-relative top-20 start-50 translate-middle-x z-index-1 d-grid">'+
-    '<label for="filter-price">Price:</label>'+
-    '<input type="text" id="filter-price" placeholder="Enter price">'+
-   ' <label for="filter-surface">Surface:</label>'+
-    '<input type="text" id="filter-surface" placeholder="Enter surface">'+
-    '<label for="filter-availability">Availability:</label>'+
-    '<select id="filter-availability">'+
-       ' <option value="">All</option>'+
-        '<option value="Available">Available</option>'+
-        '<option value="Reserved">Reserved</option>'+
-    '</select>'+
-    '<button onclick="applyFilters()">Apply Filters</button>'+
-'</div>';
+    // Create and append filter section
+    var filterSection = document.createElement('div');
+    filterSection.id = 'filter-section';
+    filterSection.className = 'position-relative top-20 start-50 translate-middle-x z-index-1 d-grid';
 
+    filterSection.innerHTML = 
+        '<label for="filter-price">Price:</label>' +
+        '<input type="text" id="filter-price" placeholder="Enter price">' +
+        '<label for="filter-surface">Surface:</label>' +
+        '<input type="text" id="filter-surface" placeholder="Enter surface">' +
+        '<label for="filter-availability">Availability:</label>' +
+        '<select id="filter-availability">' +
+            '<option value="">All</option>' +
+            '<option value="Available">Available</option>' +
+            '<option value="Reserved">Reserved</option>' +
+        '</select>' +
+        '<button onclick="applyFilters()">Apply Filters</button>';
 
-// Clear previous content
-    // sidebar.innerHTML = ''; 
+    sidebar.appendChild(filterSection);
+
+    // Append the apartmentWrapper to the sidebar
+    sidebar.appendChild(apartmentWrapper);
 
     for (var apartmentKey in apartments) {
         if (apartments.hasOwnProperty(apartmentKey)) {
@@ -325,7 +337,7 @@ function updateSidebar(apartments) {
                     showApartmentDetails(key);
                 };
             })(apartmentKey);
-            sidebar.appendChild(apartmentButton);
+            apartmentWrapper.appendChild(apartmentButton);
         }
     }
 }

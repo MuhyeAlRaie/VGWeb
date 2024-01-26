@@ -283,7 +283,7 @@ input[type = "text"]{
 
 
 .apartment-wrapper button{
-    width: 20rem;
+    width: 15rem;
 }
 
 .contact-wrapper {
@@ -408,3 +408,7 @@ input[type=checkbox]:checked + label {
 .contact {
     padding: left 6px;;
 }
+
+/* @media screen and (orientation: landscape) {
+.contact 
+  } */
