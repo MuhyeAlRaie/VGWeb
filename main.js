@@ -175,15 +175,36 @@ sidebar.appendChild(wrapperDiv);
         contactWrapperDiv.className = 'contact-wrapper';
 
         // Set innerHTML for the wrapper div
-        contactWrapperDiv.innerHTML = '<h2>CONTACT US</h2>' +
-            '<p>We are excited to hear from you and assist with any inquiries or feedback you may have. Please do not hesitate to reach out through one of the following methods:</p>' +
-            '<h3>Our Address</h3>' +
-            '<p>Queen Rania Street, Amman, Jordan</p>' +
-            '<h3>Email Us</h3>' +
-            '<p>MR@VORTIGATE.COM</p>' +
-            '<h3>Call Us</h3>' +
-            '<p>+966 50 971 1777</p>' +
-            '<p>+962 781313782</p>';
+    contactWrapperDiv.innerHTML = '<h3 class="contact">Contact us</h3>' +
+    '<div class="row input-container">' +
+    '<div class="col-xs-12">' +
+    '<div class="styled-input wide">' +
+    '<input type="text" required />' +
+    '<label>Name</label>' +
+    '</div>' +
+    '</div>' +
+    '<div class="col-xs-12">' +
+    '<div class="styled-input">' +
+    '<input type="text" required />' +
+    '<label>Email</label>' +
+    '</div>' +
+    '</div>' +
+    '<div class="col-xs-12">' +
+    '<div class="styled-input">' +
+    '<input type="text" required />' +
+    '<label>Phone Number</label>' +
+    '</div>' +
+    '</div>' +
+    '<div class="col-xs-12">' +
+    '<div class="styled-input wide">' +
+    '<textarea required></textarea>' +
+    '<label>Message</label>' +
+    '</div>' +
+    '</div>' +
+    '<div class="col-xs-12">' +
+    '<a href="mailto:muhye.alraie@gmail.com" class="btn-lrg submit-btn">Send Message</a>' +
+    '</div>' +
+    '</div>';
 
         // Append the wrapper div with contact information to the sidebar
         sidebar.appendChild(contactWrapperDiv);
