@@ -163,11 +163,10 @@ html {
 input[type = "text"]{
     background: transparent;
     border: unset;
+    border-bottom: 1px solid;
     border-color: white;
     border-radius: unset;
     color: white;
-        background-color: #2d2d2d;
-
     outline: none;
 }
 
@@ -302,7 +301,10 @@ input[type = "text"]{
     padding: 10px;
 }
 
-input:focus ~ label, textarea:focus ~ label, input:valid ~ label, textarea:valid ~ label {
+.contact-wrapper input:focus ~ label,
+.contact-wrapper textarea:focus ~ label,
+.contact-wrapper input:valid ~ label,
+.contact-wrapper textarea:valid ~ label {
     font-size: 0.75em;
     color: white;
     top: -5px;
@@ -310,7 +312,7 @@ input:focus ~ label, textarea:focus ~ label, input:valid ~ label, textarea:valid
     transition: all 0.225s ease;
 }
 
-.styled-input {
+.contact-wrapper .styled-input {
     float: left;
     width: 293px;
     margin: 5px 0;
@@ -318,13 +320,13 @@ input:focus ~ label, textarea:focus ~ label, input:valid ~ label, textarea:valid
     border-radius: 4px;
 }
 
-@media only screen and (max-width: 768px){
-    .styled-input {
-        width:100%;
+@media only screen and (max-width: 768px) {
+    .contact-wrapper .styled-input {
+        width: 100%;
     }
 }
 
-.styled-input label {
+.contact-wrapper .styled-input label {
     color: #999;
     padding: 6px 30px 1rem 30px;
     position: absolute;
@@ -335,10 +337,8 @@ input:focus ~ label, textarea:focus ~ label, input:valid ~ label, textarea:valid
     pointer-events: none;
 }
 
-
-
-input,
-textarea {
+.contact-wrapper input,
+.contact-wrapper textarea {
     padding: 16px;
     border: 0;
     width: 100%;
@@ -348,27 +348,27 @@ textarea {
     border-radius: 4px;
 }
 
-input:focus,
-textarea:focus { outline: 0; }
+.contact-wrapper input:focus,
+.contact-wrapper textarea:focus { outline: 0; }
 
-input:focus ~ span,
-textarea:focus ~ span {
+.contact-wrapper input:focus ~ span,
+.contact-wrapper textarea:focus ~ span {
     width: 100%;
     -webkit-transition: all 0.075s ease;
     transition: all 0.075s ease;
 }
 
-textarea {
+.contact-wrapper textarea {
     width: 100%;
     min-height: 15em;
 }
 
-.input-container {
+.contact-wrapper .input-container {
     max-width: 100%;
     margin: 20px auto 25px auto;
 }
 
-.submit-btn {
+.contact-wrapper .submit-btn {
     padding: 7px 35px;
     border-radius: 60px;
     display: inline-block;
@@ -376,39 +376,35 @@ textarea {
     color: white;
     font-size: 18px;
     cursor: pointer;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.06),
-              0 2px 10px 0 rgba(0,0,0,0.07);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.06),
+              0 2px 10px 0 rgba(0, 0, 0, 0.07);
     -webkit-transition: all 300ms ease;
     transition: all 300ms ease;
 }
 
-.submit-btn:hover {
+.contact-wrapper .submit-btn:hover {
     transform: translateY(1px);
-    box-shadow: 0 1px 1px 0 rgba(0,0,0,0.10),
-              0 1px 1px 0 rgba(0,0,0,0.09);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.10),
+              0 1px 1px 0 rgba(0, 0, 0, 0.09);
 }
 
 @media (max-width: 768px) {
-    .submit-btn {
-        width:100%;
+    .contact-wrapper .submit-btn {
+        width: 100%;
         float: none;
-        text-align:center;
+        text-align: center;
     }
 }
 
-input[type=checkbox] + label {
-  color: #ccc;
-  font-style: italic;
+.contact-wrapper input[type=checkbox] + label {
+    color: #ccc;
+    font-style: italic;
 } 
 
-input[type=checkbox]:checked + label {
-  font-style: normal;
+.contact-wrapper input[type=checkbox]:checked + label {
+    font-style: normal;
 }
 
-.contact {
-    padding: left 6px;;
+.contact-wrapper {
+    padding-left: 6px;
 }
-
-/* @media screen and (orientation: landscape) {
-.contact 
-  } */
