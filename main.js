@@ -214,7 +214,6 @@ sidebar.appendChild(wrapperDiv);
 
 function showApartmentDetails(apartmentKey) {
     var secondSidebar = document.getElementById('second-sidebar');
-    var apartmentImage = document.getElementById('apartment-image');
     var apartmentPrice = document.getElementById('apartment-price');
     var apartmentSurface = document.getElementById('apartment-surface');
     var apartmentAvailability = document.getElementById('apartment-availability');
