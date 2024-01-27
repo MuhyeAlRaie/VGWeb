@@ -435,11 +435,23 @@ input[type = "text"]{
     }
 
     h2 {
-        font-size: 18px;
+        font-size: 14px;
     }
 
     p {
-        font-size: 14px;
+        font-size: 8px;
+    }
+
+    .statistics-wrapper {
+        font-size: 8px;
+    }
+
+    .statistics-wrapper .number{
+    font-size: 12px;
+    }
+
+    .svg-with-text-wrapper {
+        font-size: 10px;
     }
 
     .home-wrapper .statistics-wrapper .item .number {
@@ -476,7 +488,7 @@ input[type = "text"]{
     padding: 10px;
     border-radius: 5px;
     transition: background-color 0.3s ease;
-    font-size: 1.5em;
+    font-size: 10px;
     font-family: 'Poppins', sans-serif;
 }
 
