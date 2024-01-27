@@ -409,7 +409,25 @@ input[type = "text"]{
     padding-left: 6px;
 }
 
+.c-rotate {
+    display: none !important;
+}
+
+@media only screen and (max-device-width: 1200px) {
+    .c-rotate {
+        display: block !important;
+        z-index: 1;
+    }
+}
+
+
 @media only screen and (max-device-width: 1200px) and (orientation: landscape) {
+
+    .c-rotate {
+        display: none !important;
+    }
+
+
     #sidebar {
         width: 30%;
         left: 0;
@@ -467,3 +485,97 @@ input[type = "text"]{
     width: 75vw;
 }
   }
+
+  .c-rotate {
+    width: 100%;
+    height: 100vh;
+    background-color: #0a0a0a;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    align-content: center;
+  }
+  
+  .c-rotate__wrapper {
+    width: 100%;
+    height: 200px;
+    padding-top: 60vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .c-rotate__icon {
+    color: #ffffff;
+    position: absolute;
+  }
+  
+  .c-rotate__icon--mobile {
+    font-size: 5rem;
+    animation: 3s ease-in-out 0s infinite rotateMobile;
+  }
+  
+  .c-rotate__icon--refresh {
+    opacity: 0;
+    font-size: 10rem;
+    opacity: 0.7;
+    transform: rotate(-50deg);
+    animation: 3s ease-in-out 0s infinite rotate;
+  }
+  
+  .c-rotate__text {
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 2rem;
+    text-align: center;
+  }
+  
+  .c-rotate__text p {
+    margin-bottom: 4px;
+    font-size: 24px;
+    padding-top: 14rem;
+  }
+  
+  .c-rotate__text a {
+    color: #7ccfff;
+    font-size: 20px;
+  }
+  
+  /*------------------------------------*\
+    #Animations
+  \*------------------------------------*/
+  @keyframes rotate {
+    0% {
+      transform: rotate(0-50eg);
+      opacity: 0;
+    }
+    30% {
+      opacity: 1;
+    }
+    48% {
+      opacity: 0;
+    }
+    50% {
+      transform: rotate(130deg);
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
+  @keyframes rotateMobile {
+    0% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(90deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+  
