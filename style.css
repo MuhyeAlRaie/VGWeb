@@ -425,7 +425,12 @@ input[type = "text"]{
 @media only screen and (max-device-width: 1200px) and (orientation: landscape) {
 
     .contact-wrapper {
-        margin-top: 7rem;
+        margin-top: 2rem;
+    }
+
+    
+    .contact-wrapper .styled-input label {
+        padding: 6px 30px 1rem 10px
     }
 
     .contact-wrapper .styled-input {
@@ -463,7 +468,7 @@ font-size: 8px;
     .contact {
         font-size: 14px;
     }
-    
+
     #second-sidebar {
         top: 13%;
         left: 30%;
