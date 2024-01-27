@@ -423,13 +423,51 @@ input[type = "text"]{
 
 
 @media only screen and (max-device-width: 1200px) and (orientation: landscape) {
+
+    .contact-wrapper {
+        margin-top: 7rem;
+    }
+
+    .contact-wrapper .styled-input {
+        width: 170px;
+    }
+
+    .contact-wrapper input {
+        font-size: 7px;
+    }
+
+    .contact-wrapper a {
+        font-size: 7px;
+    }
+
+    .contact-wrapper .submit-btn {
+      font-size: 10px;
+    }
     .Feature-wrapper button {
         width: 10rem;
+    }
+
+    .contact-wrapper label{
+font-size: 8px;
+    }
+
+    .contact-wrapper input {
+        font-size: 10px;
+        padding: 7px;
+    }
+    
+    .contact-wrapper textarea {
+    min-height: 6rem;
+    }
+
+    .contact {
+        font-size: 14px;
     }
     
     #second-sidebar {
         top: 13%;
         left: 30%;
+        overflow: scroll !important;
     }
 
     #second-sidebar p{
