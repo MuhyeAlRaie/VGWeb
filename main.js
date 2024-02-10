@@ -390,7 +390,7 @@ function openIframe(iframeSrc) {
 
     if (isDeviceRotated()) {
         iframe.width = '600'; // Set the width of the iframe (adjust as needed)
-    iframe.height = '300'; // Set the height of the iframe (adjust as needed)
+    iframe.height = '200'; // Set the height of the iframe (adjust as needed)
     }
     // Create a container div for the iframe and button
     var container = document.createElement('div');
