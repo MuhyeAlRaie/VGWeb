@@ -18,7 +18,7 @@ var apartmentData = {
         "availability": "Reserved",
         "bedroom": 1,
         "bathroom": 1,
-        "iframeSrc": "https://www.example.com/your_iframe_url_here"
+        "iframeSrc": "https://momento360.com/e/u/a9b53aa8f8b0403ba7a4e18243aabc66"
     },
     "apartment3": {
         "video": "asset/apartmentsVid.mp4",
@@ -28,7 +28,7 @@ var apartmentData = {
         "availability": "Available",
         "bedroom": 1,
         "bathroom": 1,
-        "iframeSrc": "https://www.example.com/your_iframe_url_here"
+        "iframeSrc": "https://momento360.com/e/u/a9b53aa8f8b0403ba7a4e18243aabc66"
     },  
      "apartment4": {
         "video": "asset/apartmentsVid.mp4",
@@ -38,7 +38,7 @@ var apartmentData = {
         "availability": "Available",
         "bedroom": 1,
         "bathroom": 1,
-        "iframeSrc": "https://www.example.com/your_iframe_url_here"
+        "iframeSrc": "https://momento360.com/e/u/a9b53aa8f8b0403ba7a4e18243aabc66"
     },
     "apartment5": {
         "video": "asset/apartmentsVid.mp4",
@@ -48,7 +48,7 @@ var apartmentData = {
         "availability": "Reserved",
         "bedroom": 2,
         "bathroom": 1,
-        "iframeSrc": "https://www.example.com/your_iframe_url_here"
+        "iframeSrc": "https://momento360.com/e/u/a9b53aa8f8b0403ba7a4e18243aabc66"
     },
     // Add details for other apartments as needed
 };
@@ -376,6 +376,11 @@ function updateSidebar(apartments) {
 //     iframeContainer.appendChild(closeButton);
 // }
 
+function isDeviceRotated() {
+    return window.matchMedia("(orientation: landscape)").matches;
+  }
+  
+
 function openIframe(iframeSrc) {
     // Create an iframe element
     var iframe = document.createElement('iframe');
@@ -383,6 +388,10 @@ function openIframe(iframeSrc) {
     iframe.width = '1000'; // Set the width of the iframe (adjust as needed)
     iframe.height = '800'; // Set the height of the iframe (adjust as needed)
 
+    if (isDeviceRotated()) {
+        iframe.width = '600'; // Set the width of the iframe (adjust as needed)
+    iframe.height = '300'; // Set the height of the iframe (adjust as needed)
+    }
     // Create a container div for the iframe and button
     var container = document.createElement('div');
     container.className = 'iframe-container';
