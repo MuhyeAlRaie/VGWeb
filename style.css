@@ -430,6 +430,10 @@ input[type = "text"]{
     #filter-section input {
         width: 66%;
     }
+
+    #apartment-image {
+        display: none;
+    }
     
     .contact-wrapper .styled-input label {
         padding: 0 10px;    }
@@ -471,9 +475,9 @@ font-size: 8px;
     }
 
     #second-sidebar {
-        top: 13%;
-        left: 30%;
-        overflow: scroll !important;
+    top: 13%;
+    left: 26%;
+    overflow: scroll !important;
     }
 
     #second-sidebar p{
