@@ -377,8 +377,11 @@ function updateSidebar(apartments) {
 // }
 
 function isDeviceRotated() {
-    return window.matchMedia("(orientation: landscape)").matches;
-  }
+  
+    // If it's a mobile device and in landscape orientation, return true
+    if (window.matchMedia("(orientation: landscape) and (max-device-width: 1200px)").matches) {
+        return true;
+    }   }
   
 
 function openIframe(iframeSrc) {
@@ -386,11 +389,11 @@ function openIframe(iframeSrc) {
     var iframe = document.createElement('iframe');
     iframe.src = iframeSrc;
     iframe.width = '1000'; // Set the width of the iframe (adjust as needed)
-    iframe.height = '800'; // Set the height of the iframe (adjust as needed)
+    iframe.height = '500'; // Set the height of the iframe (adjust as needed)
 
     if (isDeviceRotated()) {
         iframe.width = '600'; // Set the width of the iframe (adjust as needed)
-    iframe.height = '200'; // Set the height of the iframe (adjust as needed)
+        iframe.height = '200'; // Set the height of the iframe (adjust as needed)
     }
     // Create a container div for the iframe and button
     var container = document.createElement('div');
@@ -439,5 +442,3 @@ function openIframe(iframeSrc) {
     closeButton.style.color = '#000'; // Set the color of the "X"
     closeButton.style.cursor = 'pointer';
 }
-
-
