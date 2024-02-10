@@ -427,7 +427,9 @@ input[type = "text"]{
     .contact-wrapper {
         margin-top: 2rem;
     }
-
+    #filter-section input {
+        width: 66%;
+    }
     
     .contact-wrapper .styled-input label {
         padding: 0 10px;    }
