@@ -22,7 +22,7 @@ var apartmentData = {
     },
     "apartment3": {
         "video": "assets/apartmentsVid.mp4",
-        "image": "assetsFloorPlane.jpg",
+        "image": "assets/FloorPlane.jpg",
         "price": 150000,
         "surface": 60,
         "availability": "Available",
