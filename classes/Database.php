@@ -1,19 +1,11 @@
-<?php
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "vgweb";
-
-try {
-    $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
-    // Set the PDO error mode to exception
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connected successfully";
-} catch(PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
-}
-
-// Close connection
-$conn = null;
-?>
+<?php      
+    $host = "localhost";  
+    $user = "root";  
+    $password = '';  
+    $db_name = "vgweb";  
+      
+    $con = mysqli_connect($host, $user, $password, $db_name);  
+    if(mysqli_connect_errno()) {  
+        die("Failed to connect with MySQL: ". mysqli_connect_error());  
+    }  
+?>  
