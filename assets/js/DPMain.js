@@ -53,6 +53,32 @@ var apartmentData = {
     // Add details for other apartments as needed
 };
 
+function fetchBasicInfo() {
+    // Return a Promise
+    return new Promise((resolve, reject) => {
+        // Fetch data from the API endpoint
+        fetch('NiceAdmin/API/GET_Basic_info.php')
+            .then(response => {
+                // Check if response is successful
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // Parse JSON response
+                return response.json();
+            })
+            .then(data => {
+                console.log(data[0])
+                // Resolve the Promise with the retrieved data
+                resolve(data[0]);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                // Reject the Promise with the error
+                reject(error);
+            });
+    });
+}
+
 
 function changeVideo(videoSource, button) {
     document.getElementById('background-video').src = videoSource;
@@ -126,16 +152,20 @@ changeVideo('assets/HomeVid.mp4', button);
 var wrapperDiv = document.createElement('div');
 wrapperDiv.className = 'home-wrapper';
 
-// Set innerHTML for the wrapper div
-wrapperDiv.innerHTML = '<h2>Your Project on Earth</h2>' +
-    '<p class="main-desc">We are developing a sophisticated complex tailored for individuals who appreciate contemporary urban living. This innovative concept is designed to impeccably align with the distinctive standards of Dubai.</p>' +
+
+// item = fetchBasicInfo();
+fetchBasicInfo().then(result => {
+    wrapperDiv.innerHTML = '<h2>'+result['Title']+'</h2>' +
+    '<p class="main-desc">'+ result['Description']+'</p>' +
     '<div class="statistics-wrapper">' +
-    '<div class="item"><div class="number">4</div><div class="description">minutes to the bus station</div></div>' +
-    '<div class="item"><div class="number">7</div><div class="description">minutes to the shopping center</div></div>' +
-    '<div class="item"><div class="number">25</div><div class="description">minutes from the airport</div></div>' +
+    '<div class="item"><div class="number">'+ result['statistic_value_1'] +'</div><div class="description">'+ result['statistic_title_1'] +'</div></div>' +
+    '<div class="item"><div class="number">'+ result['statistic_value_2'] +'</div><div class="description">'+ result['statistic_title_2'] +'</div></div>' +
+    '<div class="item"><div class="number">'+ result['statistic_value_3'] +'</div><div class="description">'+ result['statistic_title_3'] +'</div></div>' +
     '</div>'+
-    '<div class="svg-with-text-wrapper"><img class="your-svg-class" src="assets/location-sign-svgrepo-com.svg" alt="Your SVG"><span class="svg-text">Riyadh, saudi arabia</span></div>';
-    ;
+    '<div class="svg-with-text-wrapper"><img class="your-svg-class" src="assets/location-sign-svgrepo-com.svg" alt="Your SVG"><span class="svg-text">'+ result['Location']+'</span></div>';
+    ;});
+// Set innerHTML for the wrapper div
+
 
 // Append the wrapper div to the sidebar
 sidebar.appendChild(wrapperDiv);

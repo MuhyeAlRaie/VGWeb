@@ -4,9 +4,9 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="menu-items.php">
+        <a class="nav-link " href="basic-info.php">
           <i class="bi bi-grid"></i>
-          <span>Menu Items</span>
+          <span>Basic Info</span>
         </a>
       </li><!-- End Dashboard Nav -->
 
