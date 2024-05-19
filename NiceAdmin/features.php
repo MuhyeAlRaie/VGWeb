@@ -339,8 +339,8 @@ if (!empty($features)) {
         echo "<td>{$feature['ID']}</td>";
         echo "<td>{$feature['Feature']}</td>";
         echo "<td>{$out}</td>";
-        echo "<td><a href='edit.php?id={$feature['ID']}'>Edit</a></td>";
-        echo "<td><a href='delete.php?id={$feature['ID']}'>Delete</a></td>";
+        echo "<td><a href='edit.php?id={$feature['ID']}' class ='btn btn-primary'>Edit</a></td>";
+        echo "<td><a href='forms/delete-features.php?id={$feature['ID']}' class ='btn btn-danger'>Delete</a></td>";
         echo "</tr>";
     }
     
