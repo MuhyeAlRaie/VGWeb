@@ -67,7 +67,30 @@ function fetchBasicInfo() {
                 return response.json();
             })
             .then(data => {
-                console.log(data[0])
+                // Resolve the Promise with the retrieved data
+                resolve(data[0]);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                // Reject the Promise with the error
+                reject(error);
+            });
+    });
+}
+function fetchFeatures() {
+    // Return a Promise
+    return new Promise((resolve, reject) => {
+        // Fetch data from the API endpoint
+        fetch('NiceAdmin/API/GET_Features.php')
+            .then(response => {
+                // Check if response is successful
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // Parse JSON response
+                return response.json();
+            })
+            .then(data => {
                 // Resolve the Promise with the retrieved data
                 resolve(data[0]);
             })
@@ -170,30 +193,45 @@ fetchBasicInfo().then(result => {
 // Append the wrapper div to the sidebar
 sidebar.appendChild(wrapperDiv);
     } else if (type === 'features') {
-        // Change video source and add buttons for features
-        changeVideo('assets/FeaturesVid.mp4', button);
-        var features = ['RoofTopGarden', 'PlayGround', 'Parking', 'ShoppingMall'];
-
-        // Create a wrapper div
-        var wrapperDiv = document.createElement('div');
-        wrapperDiv.className = 'Feature-wrapper';
-
-        for (var j = 0; j < features.length; j++) {
-            var featureButton = document.createElement('button');
-            featureButton.textContent = features[j];
-            featureButton.onclick = function () {
+        fetchFeatures()
+        .then(features => {
+            console.log(features);
+          // Check if features array is not empty
+          if (Array.isArray(features) && features.length > 0) {
+            // Change video source and add buttons for features
+            changeVideo('assets/FeaturesVid.mp4', button);
+            
+            // Create a wrapper div for feature buttons
+            var wrapperDiv = document.createElement('div');
+            wrapperDiv.className = 'Feature-wrapper';
+      
+            // Iterate over features array
+            features.forEach(feature => {
+              // Create a button element for each feature
+              var featureButton = document.createElement('button');
+              featureButton.textContent = feature;
+              
+              // Add click event listener to each feature button
+              featureButton.onclick = function () {
                 changeVideo('assets/Bgvid.mp4', button);
                 // Handle feature click
                 // You can customize this function to display more information about the feature
-                console.log('Feature Clicked: ' + features[j]);
-            };
-
-            // Append each button to the wrapper div
-            wrapperDiv.appendChild(featureButton);
-        }
-
-        // Append the wrapper div to the sidebar
-        sidebar.appendChild(wrapperDiv);
+                console.log('Feature Clicked: ' + feature);
+              };
+      
+              // Append feature button to the wrapper div
+              wrapperDiv.appendChild(featureButton);
+            });
+      
+            // Append the wrapper div to the sidebar
+            sidebar.appendChild(wrapperDiv);
+          } else {
+            console.log('No features found.');
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching features:', error);
+        });
 
     } else if (type === 'contact') {
         // Change video source and add buttons for features

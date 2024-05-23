@@ -1,5 +1,5 @@
 <?php
-include('../../classes/database.php');  
+include('../database.php');  
 
 // Check if ID parameter is set in the URL
 if(isset($_GET['id'])) {
@@ -12,16 +12,16 @@ if(isset($_GET['id'])) {
     // Execute the DELETE query
     if(mysqli_query($con, $query)) {
         // If deletion is successful, redirect back to the listing page with success message
-        header("Location: ../features.php?message=Item deleted successfully");
+        header("Location: ../../NiceAdmin/features.php?message=Item deleted successfully");
         exit();
     } else {
         // If deletion fails, redirect back to the listing page with error message
-        header("Location: ../features.php?error=Failed to delete item: " . mysqli_error($con));
+        header("Location: ../../NiceAdmin/.php?error=Failed to delete item: " . mysqli_error($con));
         exit();
     }
 } else {
     // If ID parameter is not set, redirect back to the listing page with error message
-    header("Location: ../features.php?error=Invalid request");
+    header("Location:../../NiceAdmin/.php?error=Invalid request");
     exit();
 }
 

@@ -10,29 +10,46 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-// Fetch project details
-$projectQuery = "SELECT * FROM features";
-$projectResult = $con->query($projectQuery);
 
-// Initialize $features as an empty array
-$features = [];
+// Check if ID parameter is set in the URL
+if(isset($_GET['id'])) {
+    // Sanitize the ID parameter to prevent SQL injection
+    $id = mysqli_real_escape_string($con, $_GET['id']);
 
-// Check if query was successful
-if ($projectResult) {
-    // Fetch all rows as an associative array
-    while ($row = $projectResult->fetch_assoc()) {
-        $features[] = $row;
+    // Construct the SELECT query to retrieve the feature details
+    $query = "SELECT * FROM features WHERE ID = $id";
+
+    // Execute the SELECT query
+    $result = mysqli_query($con, $query);
+
+    // Check if the feature with the specified ID exists
+    if(mysqli_num_rows($result) == 1) {
+        // Fetch the feature details as an associative array
+        $feature = mysqli_fetch_assoc($result);
     }
-} else {
-    // Error handling if query fails
-    $error_message = "Error fetching features: " . $con->error;
 }
 
-$con->close();
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve and sanitize form data
+    $new_feature_name = mysqli_real_escape_string($con, $_POST['new_feature_name']);
 
-$error_message = isset($_GET['error']) ? $_GET['error'] : '';
-$success_message = isset($_GET['message']) ? $_GET['message'] : '';
+    // Construct the UPDATE query to update the feature details
+    $update_query = "UPDATE features SET Feature = '$new_feature_name' WHERE ID = $id";
 
+    // Execute the UPDATE query
+    if(mysqli_query($con, $update_query)) {
+        // If update is successful, redirect back to the listing page with success message
+        header("Location: features.php?message=Feature updated successfully");
+        exit();
+    } else {
+        // If update fails, display error message
+        $error_message = "Failed to update feature: " . mysqli_error($con);
+    }
+}
+// 
+// Close database connection
+mysqli_close($con);
 ?>
 
 <!DOCTYPE html>
@@ -325,40 +342,26 @@ $success_message = isset($_GET['message']) ? $_GET['message'] : '';
 
     <div class="card">
             <div class="card-body">
-            <?php
-if (!empty($features)) {
-    echo "<h1>Listing Page</h1>";
-    echo "<table class='table'>";
-    echo "<thead>";
-    echo "<tr>";
-    echo "<th scope='col'>#</th>";
-    echo "<th scope='col'>Feature</th>";
-    echo "<th scope='col'>Link</th>";
-    echo "<th scope='col'>Edit</th>";
-    echo "<th scope='col'>Delete</th>";
-    echo "</tr>";
-    echo "</thead>";
-    echo "<tbody>";
-    
-    // Output each record as a table row with edit and delete buttons
-    foreach ($features as $index => $feature) {
-        $out = strlen($feature['Link']) > 50 ? substr($feature['Link'],0,50)."..." : $feature['Link'];
+ 
+            <?php if (!empty($error_message)): ?>
+        <div><?php echo $error_message; ?></div>
+    <?php endif; ?>
 
-        echo "<tr>";
-        echo "<td>{$feature['ID']}</td>";
-        echo "<td>{$feature['Feature']}</td>";
-        echo "<td>{$out}</td>";
-        echo "<td><a href='feature-edit.php?id={$feature['ID']}' class ='btn btn-primary'>Edit</a></td>";
-        echo "<td><a href='../classes/features/delete-features.php?id={$feature['ID']}' class ='btn btn-danger'>Delete</a></td>";
-        echo "</tr>";
-    }
-    
-    echo "</tbody>";
-    echo "</table>";
-} else {
-    echo "No items found.";
-}
-            ?>
+    <form class="row g-3" method="post"action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=" . $id; ?>">
+                <div class="col-12">
+                  <label for="title" class="form-label">Title</label>
+                  <input type="text" name="title" class="form-control" type="text" id="new_feature_name" name="new_feature_name" value="<?php echo $feature['Feature']; ?>" >
+                </div>
+                <div class="col-12"> 
+                <label for="Link" class="form-label">Link</label>
+                  <input type="text" name="Link" class="form-control" type="text" id="Link" name="Link" value="<?php echo $feature['Link']; ?>" >
+                </div>
+
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+
+
 
 
               <?php if (!empty($error_message)): ?>

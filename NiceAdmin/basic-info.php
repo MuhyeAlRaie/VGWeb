@@ -1,6 +1,17 @@
 <?php
 include('../classes/database.php');  
 
+
+session_start();
+
+// Check if the user is logged in
+if (!isset($_SESSION['username'])) {
+    // Redirect to the login page
+    header("Location: ../user.php");
+    exit();
+}
+
+
 // Fetch project details
 $projectQuery = "SELECT * FROM basic_info ORDER BY ID DESC LIMIT 1";
 
@@ -305,7 +316,7 @@ $success_message = isset($_GET['message']) ? $_GET['message'] : '';
     <div class="card">
             <div class="card-body">
               <!-- Vertical Form -->
-              <form class="row g-3" method="post" action="forms/Basic-info-handler.php">
+              <form class="row g-3" method="post" action="forms/Basic-info-handler.php" novalidate>
                 <div class="col-12">
                   <label for="title" class="form-label">Title</label>
                   <input type="text" name="title" class="form-control" id="title" value="<?php echo $basic_info['Title']; ?>"  >
