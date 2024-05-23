@@ -83,9 +83,9 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchFeatures()
         .then(features => {
             // If features are successfully fetched, display them
-            console.log(features); // For testing purposes, you can log the features data
+            // console.log(features); // For testing purposes, you can log the features data
             // Assuming features data is an array of objects with 'ID', 'Feature', and 'Link' properties
-            displayFeatures(features);
+
         })
         .catch(error => {
             // If there's an error while fetching features, log the error
@@ -98,7 +98,7 @@ function fetchFeatures() {
     // Return a Promise
     return new Promise((resolve, reject) => {
         // Fetch data from the API endpoint
-        fetch('NiceAdmin/API/GET_Features.php')
+        fetch('NiceAdmin/API/GET-Features.php')
             .then(response => {
                 // Check if response is successful
                 if (!response.ok) {
@@ -210,7 +210,42 @@ function openSidebar(type, button) {
         // Append the wrapper div to the sidebar
         sidebar.appendChild(wrapperDiv);
     } else if (type === 'features') {
+        fetchFeatures()
+            .then(features => {
+                // Check if features array is not 
 
+                // if (Array.isArray(features)) {
+                console.log("test");
+                console.log(features);
+                // Change video source to the features video
+                changeVideo('assets/FeaturesVid.mp4', button);
+
+                // Create a wrapper div
+                var wrapperDiv = document.createElement('div');
+                wrapperDiv.className = 'Feature-wrapper';
+
+                console.log(features.length);
+                Object.keys(features).forEach(function(key) {
+                    var featureButton = document.createElement('button');
+                    featureButton.textContent = features[key];
+                    featureButton.onclick = function () {
+                        changeVideo('assets/Bgvid.mp4', button);
+                        // Handle feature click
+                        // You can customize this function to display more information about the feature
+                        console.log('Feature Clicked: ' + features[key]);
+                    };
+            
+                    // Append each button to the wrapper div
+                    wrapperDiv.appendChild(featureButton);
+                });
+
+                // Append the wrapper div to the sidebar
+                sidebar.appendChild(wrapperDiv);
+
+            })
+            .catch(error => {
+                console.error('Error fetching features:', error);
+            });
 
     } else if (type === 'contact') {
         // Change video source and add buttons for features
