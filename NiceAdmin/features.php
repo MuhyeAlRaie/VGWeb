@@ -310,72 +310,108 @@ $success_message = isset($_GET['message']) ? $_GET['message'] : '';
 
   <?php require_once(__DIR__."/includes/sidebar.php"); ?>
 
+<main id="main" class="main">
 
-  <main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Basic info</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item active">Basic info</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
 
-    <div class="pagetitle">
-      <h1>Basic info</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">Basic info</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
+  <div class="card">
+    <div class="card-body">
+      <?php
+        if (!empty($features)) {
+            echo "<h1>Listing Page</h1>";
+            echo "<table class='table'>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th scope='col'>#</th>";
+            echo "<th scope='col'>Feature</th>";
+            echo "<th scope='col'>Link</th>";
+            echo "<th scope='col'>Edit</th>";
+            echo "<th scope='col'>Delete</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
+            
+            // Output each record as a table row with edit and delete buttons
+            foreach ($features as $index => $feature) {
+                $out = strlen($feature['Link']) > 50 ? substr($feature['Link'],0,50)."..." : $feature['Link'];
 
-    <div class="card">
-            <div class="card-body">
-            <?php
-if (!empty($features)) {
-    echo "<h1>Listing Page</h1>";
-    echo "<table class='table'>";
-    echo "<thead>";
-    echo "<tr>";
-    echo "<th scope='col'>#</th>";
-    echo "<th scope='col'>Feature</th>";
-    echo "<th scope='col'>Link</th>";
-    echo "<th scope='col'>Edit</th>";
-    echo "<th scope='col'>Delete</th>";
-    echo "</tr>";
-    echo "</thead>";
-    echo "<tbody>";
-    
-    // Output each record as a table row with edit and delete buttons
-    foreach ($features as $index => $feature) {
-        $out = strlen($feature['Link']) > 50 ? substr($feature['Link'],0,50)."..." : $feature['Link'];
+                echo "<tr>";
+                echo "<td>{$feature['ID']}</td>";
+                echo "<td>{$feature['Feature']}</td>";
+                echo "<td>{$out}</td>";
+                echo "<td><a href='feature-edit.php?id={$feature['ID']}' class ='btn btn-primary'>Edit</a></td>";
+                echo "<td><button type='button' class='btn btn-danger deleteBtn' data-bs-toggle='modal' data-bs-target='#deleteModal' data-feature-id='{$feature['ID']}'>Delete</button></td>";
+                echo "</tr>";
+            }
+            
+            echo "</tbody>";
+            echo "</table>";
+        } else {
+            echo "No items found.";
+        }
+      ?>
 
-        echo "<tr>";
-        echo "<td>{$feature['ID']}</td>";
-        echo "<td>{$feature['Feature']}</td>";
-        echo "<td>{$out}</td>";
-        echo "<td><a href='feature-edit.php?id={$feature['ID']}' class ='btn btn-primary'>Edit</a></td>";
-        echo "<td><a href='../classes/features/delete-features.php?id={$feature['ID']}' class ='btn btn-danger'>Delete</a></td>";
-        echo "</tr>";
-    }
-    
-    echo "</tbody>";
-    echo "</table>";
-} else {
-    echo "No items found.";
-}
-            ?>
+      <?php if (!empty($error_message)): ?>
+        <div class="alert alert-danger" role="alert">
+          <?php echo $error_message; ?>
+        </div>
+      <?php elseif (!empty($success_message)): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <?php echo $success_message; ?>
+        </div>
+      <?php endif; ?>
 
+    </div>
+  </div>
 
-              <?php if (!empty($error_message)): ?>
-                        <div class="alert alert-danger" role="alert">
-                             <?php echo $error_message; ?>
-                         </div>
-                         <?php elseif (!empty($success_message)): ?>
-                          <div class="alert alert-success alert-dismissible fade show" role="alert">
-                             <?php echo $success_message; ?>
-                         </div>
-                         <?php endif; ?>
+</main><!-- End #main -->
 
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this item?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-            </div>
-          </div>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const deleteButtons = document.querySelectorAll(".deleteBtn");
+    const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+    let deleteId = null;
 
-  </main><!-- End #main -->
+    deleteButtons.forEach(button => {
+      button.addEventListener("click", function() {
+        deleteId = this.getAttribute("data-feature-id");
+      });
+    });
+
+    confirmDeleteBtn.addEventListener("click", function() {
+      if (deleteId) {
+        window.location.href = `../classes/features/delete-features.php?id=${deleteId}`;
+      }
+    });
+  });
+</script>
 
 
 
