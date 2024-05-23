@@ -10,7 +10,6 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-
 // Check if ID parameter is set in the URL
 if(isset($_GET['id'])) {
     // Sanitize the ID parameter to prevent SQL injection
@@ -33,9 +32,10 @@ if(isset($_GET['id'])) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve and sanitize form data
     $new_feature_name = mysqli_real_escape_string($con, $_POST['new_feature_name']);
+    $new_link = mysqli_real_escape_string($con, $_POST['new_link']);
 
     // Construct the UPDATE query to update the feature details
-    $update_query = "UPDATE features SET Feature = '$new_feature_name' WHERE ID = $id";
+    $update_query = "UPDATE features SET Feature = '$new_feature_name', Link = '$new_link' WHERE ID = $id";
 
     // Execute the UPDATE query
     if(mysqli_query($con, $update_query)) {
@@ -47,10 +47,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error_message = "Failed to update feature: " . mysqli_error($con);
     }
 }
-// 
-// Close database connection
-mysqli_close($con);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -347,19 +345,19 @@ mysqli_close($con);
         <div><?php echo $error_message; ?></div>
     <?php endif; ?>
 
-    <form class="row g-3" method="post"action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=" . $id; ?>">
-                <div class="col-12">
-                  <label for="title" class="form-label">Title</label>
-                  <input type="text" name="title" class="form-control" type="text" id="new_feature_name" name="new_feature_name" value="<?php echo $feature['Feature']; ?>" >
-                </div>
-                <div class="col-12"> 
-                <label for="Link" class="form-label">Link</label>
-                  <input type="text" name="Link" class="form-control" type="text" id="Link" name="Link" value="<?php echo $feature['Link']; ?>" >
-                </div>
-
-                <div class="text-center">
-                  <button type="submit" class="btn btn-primary">Update</button>
-                </div>
+    <form class="row g-3" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=" . $id; ?>">
+    <div class="col-12">
+        <label for="new_feature_name" class="form-label">Title</label>
+        <input type="text" class="form-control" id="new_feature_name" name="new_feature_name" value="<?php echo htmlspecialchars($feature['Feature']); ?>">
+    </div>
+    <div class="col-12"> 
+        <label for="Link" class="form-label">Link</label>
+        <input type="text" class="form-control" id="Link" name="new_link" value="<?php echo htmlspecialchars($feature['Link']); ?>">
+    </div>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>
 
 
 
