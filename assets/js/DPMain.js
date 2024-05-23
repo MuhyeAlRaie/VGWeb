@@ -29,8 +29,8 @@ var apartmentData = {
         "bedroom": 1,
         "bathroom": 1,
         "iframeSrc": "https://momento360.com/e/u/e89f13d9187b4fb1a809c49d7344e60a?utm_campaign=embed&utm_source=other&heading=0&pitch=0&field-of-view=75&size=medium&display-plan=true"
-    },  
-     "apartment4": {
+    },
+    "apartment4": {
         "video": "assets/apartmentsVid.mp4",
         "image": "assets/FloorPlane.jpg",
         "price": 140000,
@@ -77,6 +77,23 @@ function fetchBasicInfo() {
             });
     });
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Call fetchFeatures function when the DOM content is loaded
+    fetchFeatures()
+        .then(features => {
+            // If features are successfully fetched, display them
+            console.log(features); // For testing purposes, you can log the features data
+            // Assuming features data is an array of objects with 'ID', 'Feature', and 'Link' properties
+            displayFeatures(features);
+        })
+        .catch(error => {
+            // If there's an error while fetching features, log the error
+            console.error('Error fetching features:', error);
+        });
+});
+
+
 function fetchFeatures() {
     // Return a Promise
     return new Promise((resolve, reject) => {
@@ -133,23 +150,23 @@ function openSidebar(type, button) {
     if (type === 'apartments') {
         // Change video source and dynamically generate buttons for apartments
         changeVideo('assets/apartmentsVid.mp4', button);
-        sidebar.innerHTML ='<div id="filter-section" class="position-relative top-20 start-50 translate-middle-x z-index-1 d-grid">'+
-        '<label for="filter-price">Price:</label>'+
-        '<input type="text" id="filter-price" placeholder="Enter price">'+
-       ' <label for="filter-surface">Surface:</label>'+
-        '<input type="text" id="filter-surface" placeholder="Enter surface">'+
-        '<label for="filter-availability">Availability:</label>'+
-        '<select id="filter-availability">'+
-           ' <option value="">All</option>'+
-            '<option value="Available">Available</option>'+
-            '<option value="Reserved">Reserved</option>'+
-        '</select>'+
-        '<button onclick="applyFilters()">Apply Filters</button>'+
-    '</div>';
+        sidebar.innerHTML = '<div id="filter-section" class="position-relative top-20 start-50 translate-middle-x z-index-1 d-grid">' +
+            '<label for="filter-price">Price:</label>' +
+            '<input type="text" id="filter-price" placeholder="Enter price">' +
+            ' <label for="filter-surface">Surface:</label>' +
+            '<input type="text" id="filter-surface" placeholder="Enter surface">' +
+            '<label for="filter-availability">Availability:</label>' +
+            '<select id="filter-availability">' +
+            ' <option value="">All</option>' +
+            '<option value="Available">Available</option>' +
+            '<option value="Reserved">Reserved</option>' +
+            '</select>' +
+            '<button onclick="applyFilters()">Apply Filters</button>' +
+            '</div>';
         // Loop through the apartmentData and generate buttons
         var apartmentWrapperDiv = document.createElement('div');
         apartmentWrapperDiv.className = 'apartment-wrapper';
-        
+
         // Loop through the apartmentData and generate buttons
         for (var apartmentKey in apartmentData) {
             if (apartmentData.hasOwnProperty(apartmentKey)) {
@@ -161,77 +178,39 @@ function openSidebar(type, button) {
                         showApartmentDetails(key);
                     };
                 })(apartmentKey);
-                
+
                 apartmentWrapperDiv.appendChild(apartmentButton);
             }
         }
-        
+
         // Append the wrapper div with apartment buttons to the sidebar
         sidebar.appendChild(apartmentWrapperDiv);
     } else if (type === 'home') {
-// Change video source and add custom content for Home
-changeVideo('assets/HomeVid.mp4', button);
+        // Change video source and add custom content for Home
+        changeVideo('assets/HomeVid.mp4', button);
 
-var wrapperDiv = document.createElement('div');
-wrapperDiv.className = 'home-wrapper';
-
-
-// item = fetchBasicInfo();
-fetchBasicInfo().then(result => {
-    wrapperDiv.innerHTML = '<h2>'+result['Title']+'</h2>' +
-    '<p class="main-desc">'+ result['Description']+'</p>' +
-    '<div class="statistics-wrapper">' +
-    '<div class="item"><div class="number">'+ result['statistic_value_1'] +'</div><div class="description">'+ result['statistic_title_1'] +'</div></div>' +
-    '<div class="item"><div class="number">'+ result['statistic_value_2'] +'</div><div class="description">'+ result['statistic_title_2'] +'</div></div>' +
-    '<div class="item"><div class="number">'+ result['statistic_value_3'] +'</div><div class="description">'+ result['statistic_title_3'] +'</div></div>' +
-    '</div>'+
-    '<div class="svg-with-text-wrapper"><img class="your-svg-class" src="assets/location-sign-svgrepo-com.svg" alt="Your SVG"><span class="svg-text">'+ result['Location']+'</span></div>';
-    ;});
-// Set innerHTML for the wrapper div
+        var wrapperDiv = document.createElement('div');
+        wrapperDiv.className = 'home-wrapper';
 
 
-// Append the wrapper div to the sidebar
-sidebar.appendChild(wrapperDiv);
-    } else if (type === 'features') {
-        fetchFeatures()
-        .then(features => {
-            console.log(features);
-          // Check if features array is not empty
-          if (Array.isArray(features) && features.length > 0) {
-            // Change video source and add buttons for features
-            changeVideo('assets/FeaturesVid.mp4', button);
-            
-            // Create a wrapper div for feature buttons
-            var wrapperDiv = document.createElement('div');
-            wrapperDiv.className = 'Feature-wrapper';
-      
-            // Iterate over features array
-            features.forEach(feature => {
-              // Create a button element for each feature
-              var featureButton = document.createElement('button');
-              featureButton.textContent = feature;
-              
-              // Add click event listener to each feature button
-              featureButton.onclick = function () {
-                changeVideo('assets/Bgvid.mp4', button);
-                // Handle feature click
-                // You can customize this function to display more information about the feature
-                console.log('Feature Clicked: ' + feature);
-              };
-      
-              // Append feature button to the wrapper div
-              wrapperDiv.appendChild(featureButton);
-            });
-      
-            // Append the wrapper div to the sidebar
-            sidebar.appendChild(wrapperDiv);
-          } else {
-            console.log('No features found.');
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching features:', error);
+        // item = fetchBasicInfo();
+        fetchBasicInfo().then(result => {
+            wrapperDiv.innerHTML = '<h2>' + result['Title'] + '</h2>' +
+                '<p class="main-desc">' + result['Description'] + '</p>' +
+                '<div class="statistics-wrapper">' +
+                '<div class="item"><div class="number">' + result['statistic_value_1'] + '</div><div class="description">' + result['statistic_title_1'] + '</div></div>' +
+                '<div class="item"><div class="number">' + result['statistic_value_2'] + '</div><div class="description">' + result['statistic_title_2'] + '</div></div>' +
+                '<div class="item"><div class="number">' + result['statistic_value_3'] + '</div><div class="description">' + result['statistic_title_3'] + '</div></div>' +
+                '</div>' +
+                '<div class="svg-with-text-wrapper"><img class="your-svg-class" src="assets/location-sign-svgrepo-com.svg" alt="Your SVG"><span class="svg-text">' + result['Location'] + '</span></div>';;
         });
+        // Set innerHTML for the wrapper div
+
+
+        // Append the wrapper div to the sidebar
+        sidebar.appendChild(wrapperDiv);
+    } else if (type === 'features') {
+
 
     } else if (type === 'contact') {
         // Change video source and add buttons for features
@@ -242,36 +221,36 @@ sidebar.appendChild(wrapperDiv);
         contactWrapperDiv.className = 'contact-wrapper';
 
         // Set innerHTML for the wrapper div
-    contactWrapperDiv.innerHTML = '<h3 class="contact">Contact us</h3>' +
-    '<div class="row input-container">' +
-    '<div class="col-xs-12">' +
-    '<div class="styled-input wide">' +
-    '<input type="text" required />' +
-    '<label>Name</label>' +
-    '</div>' +
-    '</div>' +
-    '<div class="col-xs-12">' +
-    '<div class="styled-input">' +
-    '<input type="text" required />' +
-    '<label>Email</label>' +
-    '</div>' +
-    '</div>' +
-    '<div class="col-xs-12">' +
-    '<div class="styled-input">' +
-    '<input type="text" required />' +
-    '<label>Phone Number</label>' +
-    '</div>' +
-    '</div>' +
-    '<div class="col-xs-12">' +
-    '<div class="styled-input wide">' +
-    '<textarea required></textarea>' +
-    '<label>Message</label>' +
-    '</div>' +
-    '</div>' +
-    '<div class="col-xs-12">' +
-    '<a href="mailto:muhye.alraie@gmail.com" class="btn-lrg submit-btn">Send Message</a>' +
-    '</div>' +
-    '</div>';
+        contactWrapperDiv.innerHTML = '<h3 class="contact">Contact us</h3>' +
+            '<div class="row input-container">' +
+            '<div class="col-xs-12">' +
+            '<div class="styled-input wide">' +
+            '<input type="text" required />' +
+            '<label>Name</label>' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-xs-12">' +
+            '<div class="styled-input">' +
+            '<input type="text" required />' +
+            '<label>Email</label>' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-xs-12">' +
+            '<div class="styled-input">' +
+            '<input type="text" required />' +
+            '<label>Phone Number</label>' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-xs-12">' +
+            '<div class="styled-input wide">' +
+            '<textarea required></textarea>' +
+            '<label>Message</label>' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-xs-12">' +
+            '<a href="mailto:muhye.alraie@gmail.com" class="btn-lrg submit-btn">Send Message</a>' +
+            '</div>' +
+            '</div>';
 
         // Append the wrapper div with contact information to the sidebar
         sidebar.appendChild(contactWrapperDiv);
@@ -311,8 +290,8 @@ function showApartmentDetails(apartmentKey) {
     // Hide the sidebar
     sidebar.style.display = 'block';
 
-     // Check if there is an iframe source for the virtual tour
-     if (apartmentDetails.iframeSrc) {
+    // Check if there is an iframe source for the virtual tour
+    if (apartmentDetails.iframeSrc) {
         // Remove the previous "Virtual Tour" button if it exists
         var previousVirtualTourButton = document.getElementById('virtualTourButton');
         if (previousVirtualTourButton) {
@@ -363,11 +342,11 @@ function applyFilters() {
 // Function to update the sidebar with the filtered apartments
 function updateSidebar(apartments) {
     var sidebar = document.getElementById('sidebar');
-    
+
     // Create a wrapper div for apartments
     var apartmentWrapper = document.createElement('div');
     apartmentWrapper.classList = 'apartment-wrapper';
-    
+
     // Clear previous content
     sidebar.innerHTML = '';
 
@@ -376,16 +355,16 @@ function updateSidebar(apartments) {
     filterSection.id = 'filter-section';
     filterSection.className = 'position-relative top-20 start-50 translate-middle-x z-index-1 d-grid';
 
-    filterSection.innerHTML = 
+    filterSection.innerHTML =
         '<label for="filter-price">Price:</label>' +
         '<input type="text" id="filter-price" placeholder="Enter price">' +
         '<label for="filter-surface">Surface:</label>' +
         '<input type="text" id="filter-surface" placeholder="Enter surface">' +
         '<label for="filter-availability">Availability:</label>' +
         '<select id="filter-availability">' +
-            '<option value="">All</option>' +
-            '<option value="Available">Available</option>' +
-            '<option value="Reserved">Reserved</option>' +
+        '<option value="">All</option>' +
+        '<option value="Available">Available</option>' +
+        '<option value="Reserved">Reserved</option>' +
         '</select>' +
         '<button onclick="applyFilters()">Apply Filters</button>';
 
@@ -444,12 +423,13 @@ function updateSidebar(apartments) {
 // }
 
 function isDeviceRotated() {
-  
+
     // If it's a mobile device and in landscape orientation, return true
     if (window.matchMedia("(orientation: landscape) and (max-device-width: 1200px)").matches) {
         return true;
-    }   }
-  
+    }
+}
+
 
 function openIframe(iframeSrc) {
     // Create an iframe element
