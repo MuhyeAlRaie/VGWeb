@@ -109,7 +109,7 @@ function fetchFeatures() {
             })
             .then(data => {
                 // Resolve the Promise with the retrieved data
-                resolve(data[0]);
+                resolve(data);
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
@@ -212,11 +212,6 @@ function openSidebar(type, button) {
     } else if (type === 'features') {
         fetchFeatures()
             .then(features => {
-                // Check if features array is not 
-
-                // if (Array.isArray(features)) {
-                console.log("test");
-                console.log(features);
                 // Change video source to the features video
                 changeVideo('assets/FeaturesVid.mp4', button);
 
@@ -226,8 +221,10 @@ function openSidebar(type, button) {
 
                 console.log(features.length);
                 Object.keys(features).forEach(function(key) {
+                    console.log(features);
+                    console.log(key);
                     var featureButton = document.createElement('button');
-                    featureButton.textContent = features[key];
+                    featureButton.textContent = features[key]['Feature'];
                     featureButton.onclick = function () {
                         changeVideo('assets/Bgvid.mp4', button);
                         // Handle feature click

@@ -10,30 +10,82 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-// Fetch project details
-$projectQuery = "SELECT * FROM features";
-$projectResult = $con->query($projectQuery);
+// Check if ID parameter is set in the URL
+if(isset($_GET['id'])) {
+    // Sanitize the ID parameter to prevent SQL injection
+    $id = mysqli_real_escape_string($con, $_GET['id']);
 
-// Initialize $features as an empty array
-$features = [];
+    // Construct the SELECT query to retrieve the feature details
+    $query = "SELECT * FROM apartment WHERE ID = $id";
 
-// Check if query was successful
-if ($projectResult) {
-    // Fetch all rows as an associative array
-    while ($row = $projectResult->fetch_assoc()) {
-        $features[] = $row;
+    // Execute the SELECT query
+    $result = mysqli_query($con, $query);
+
+    // Check if the feature with the specified ID exists
+    if(mysqli_num_rows($result) == 1) {
+        // Fetch the feature details as an associative array
+        $apartment = mysqli_fetch_assoc($result);
     }
-} else {
-    // Error handling if query fails
-    $error_message = "Error fetching features: " . $con->error;
 }
 
-$con->close();
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve and sanitize form data
+    $new_apartment_name = mysqli_real_escape_string($con, $_POST['new_apartment_name']);
+    $new_price = mysqli_real_escape_string($con, $_POST['price']);
+    $new_surface = mysqli_real_escape_string($con, $_POST['surface']);
+    $new_availability = isset($_POST['availability']) ? (int)$_POST['availability'] : 0; // Assuming availability is a boolean field
+    $new_bedroom = mysqli_real_escape_string($con, $_POST['bedroom']);
+    $new_bathroom = mysqli_real_escape_string($con, $_POST['bathroom']);
+    $new_iframeSrc = mysqli_real_escape_string($con, $_POST['iframeSrc']);
 
-$error_message = isset($_GET['error']) ? $_GET['error'] : '';
-$success_message = isset($_GET['message']) ? $_GET['message'] : '';
+    // Check if an image was uploaded
+    if(isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $image = $_FILES['image']['tmp_name'];
+        $imgContent = addslashes(file_get_contents($image));
+    
+        // Move uploaded file to a directory on your server
+        $target_dir = __DIR__ . "/uploads/"; // Set the target directory path relative to the current PHP script
+        $target_file = $target_dir . basename($_FILES["image"]["name"]);
+
+
+        // Construct the UPDATE query to update apartment details with image path
+        $update_query = "UPDATE apartment SET 
+                            Name = '$new_apartment_name', 
+                            price = '$new_price', 
+                            surface = '$new_surface', 
+                            availability = '$new_availability', 
+                            bedroom = '$new_bedroom', 
+                            bathroom = '$new_bathroom', 
+                            iframeSrc = '$new_iframeSrc', 
+                            image = '$target_file' 
+                        WHERE ID = $id";
+    } else {
+        // Construct the UPDATE query to update apartment details without image
+        $update_query = "UPDATE apartment SET 
+                            Name = '$new_apartment_name', 
+                            price = '$new_price', 
+                            surface = '$new_surface', 
+                            availability = '$new_availability', 
+                            bedroom = '$new_bedroom', 
+                            bathroom = '$new_bathroom', 
+                            iframeSrc = '$new_iframeSrc' 
+                        WHERE ID = $id";
+    }
+
+    // Execute the UPDATE query
+    if(mysqli_query($con, $update_query)) {
+        // If update is successful, redirect back to the listing page with success message
+        header("Location: apartments.php?message=Apartment updated successfully");
+        exit();
+    } else {
+        // If update fails, display error message
+        $error_message = "Failed to update apartment: " . mysqli_error($con);
+    }
+}
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -312,60 +364,91 @@ $success_message = isset($_GET['message']) ? $_GET['message'] : '';
 
     <?php require_once(__DIR__."/includes/sidebar.php"); ?>
 
+
     <main id="main" class="main">
 
         <div class="pagetitle">
-            <h1>Basic info</h1>
+            <h1>Apartment</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item active">Basic info</li>
+                    <li class="breadcrumb-item active">Apartment</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
 
-        <div class="w-100 d-flex flex-row-reverse mb-4 add-button-wrapper">
-          <a href='add-feature.php' class ='btn btn-primary'>ADD</a>
-        </div>
-
-
         <div class="card">
             <div class="card-body">
-                <?php
-        if (!empty($features)) {
-            echo "<h1>Listing Page</h1>";
-            echo "<table class='table'>";
-            echo "<thead>";
-            echo "<tr>";
-            echo "<th scope='col'>#</th>";
-            echo "<th scope='col'>Feature</th>";
-            echo "<th scope='col'>Link</th>";
-            echo "<th scope='col'>Edit</th>";
-            echo "<th scope='col'>Delete</th>";
-            echo "</tr>";
-            echo "</thead>";
-            echo "<tbody>";
-            
-            // Output each record as a table row with edit and delete buttons
-            foreach ($features as $index => $feature) {
-                $out = strlen($feature['Link']) > 50 ? substr($feature['Link'],0,50)."..." : $feature['Link'];
 
-                echo "<tr>";
-                echo "<td>{$feature['ID']}</td>";
-                echo "<td>{$feature['Feature']}</td>";
-                echo "<td>{$out}</td>";
-                echo "<td><a href='feature-edit.php?id={$feature['ID']}' class ='btn btn-primary'>Edit</a></td>";
-                echo "<td><button type='button' class='btn btn-danger deleteBtn' data-bs-toggle='modal' data-bs-target='#deleteModal' data-feature-id='{$feature['ID']}'>Delete</button></td>";
-                echo "</tr>";
-            }
-            
-            echo "</tbody>";
-            echo "</table>";
-        } else {
-            echo "No items found.";
-        }
-      ?>
+                <?php if (!empty($error_message)): ?>
+                <div><?php echo $error_message; ?></div>
+                <?php endif; ?>
 
+                <form class="row g-3" method="post"  enctype="multipart/form-data"
+                    action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=" . $id; ?>" >
+                    <div class="col-12">
+                        <label for="new_feature_name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="new_apartment_name" name="new_apartment_name"
+                            value="<?php echo htmlspecialchars($apartment['Name']); ?>">
+                    </div>
+                    <div class="col-6">
+                        <label for="Link" class="form-label">price</label>
+                        <input type="text" class="form-control" id="price" name="price"
+                            value="<?php echo htmlspecialchars($apartment['price']); ?>">
+                    </div>
+                    <div class="col-6">
+                        <label for="Link" class="form-label">Surface</label>
+                        <input type="text" class="form-control" id="surface" name="surface"
+                            value="<?php echo htmlspecialchars($apartment['surface']); ?>">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Availability</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="availability" id="available" value="1"
+                                <?php if ($apartment['availability'] == 1) echo "checked"; ?>>
+                            <label class="form-check-label" for="available">
+                                Available
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="availability" id="not_available"
+                                value="0" <?php if ($apartment['availability'] == 0) echo "checked"; ?>>
+                            <label class="form-check-label" for="not_available">
+                                Not Available
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label for="bedroom" class="form-label">bedroom</label>
+                        <input type="text" class="form-control" id="bedroom" name="bedroom"
+                            value="<?php echo htmlspecialchars($apartment['bedroom']); ?>">
+                    </div>
+                    <div class="col-6">
+                        <label for="bathroom" class="form-label">bathroom</label>
+                        <input type="text" class="form-control" id="bathroom" name="bathroom"
+                            value="<?php echo htmlspecialchars($apartment['bathroom']); ?>">
+                    </div>
+
+                    <div class="col-6">
+                        <label for="image" class="form-label">Image</label>
+                        <input class="form-control" type="file" id="image" name="image">
+                        <img src="<?php echo 'uploads/' . $apartment['image']; ?>" alt="Apartment Image">
+
+                    </div>
+                    <div class="col-12">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">iframeSrc</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" id="iframeSrc" name="iframeSrc"
+                                style="height: 100px"><?php echo htmlspecialchars($apartment['iframeSrc']); ?></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
                 <?php if (!empty($error_message)): ?>
                 <div class="alert alert-danger" role="alert">
                     <?php echo $error_message; ?>
@@ -376,49 +459,11 @@ $success_message = isset($_GET['message']) ? $_GET['message'] : '';
                 </div>
                 <?php endif; ?>
 
+
             </div>
         </div>
 
     </main><!-- End #main -->
-
-    <!-- Delete Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete this item?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const deleteButtons = document.querySelectorAll(".deleteBtn");
-        const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
-        let deleteId = null;
-
-        deleteButtons.forEach(button => {
-            button.addEventListener("click", function() {
-                deleteId = this.getAttribute("data-feature-id");
-            });
-        });
-
-        confirmDeleteBtn.addEventListener("click", function() {
-            if (deleteId) {
-                window.location.href = `../classes/features/delete-features.php?id=${deleteId}`;
-            }
-        });
-    });
-    </script>
 
 
 

@@ -11,17 +11,17 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Fetch project details
-$projectQuery = "SELECT * FROM features";
+$projectQuery = "SELECT * FROM apartment";
 $projectResult = $con->query($projectQuery);
 
 // Initialize $features as an empty array
-$features = [];
+$Apartments = [];
 
 // Check if query was successful
 if ($projectResult) {
     // Fetch all rows as an associative array
     while ($row = $projectResult->fetch_assoc()) {
-        $features[] = $row;
+        $Apartments[] = $row;
     }
 } else {
     // Error handling if query fails
@@ -315,31 +315,30 @@ $success_message = isset($_GET['message']) ? $_GET['message'] : '';
     <main id="main" class="main">
 
         <div class="pagetitle">
-            <h1>Basic info</h1>
+            <h1>Apartments</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item active">Basic info</li>
+                    <li class="breadcrumb-item active">Apartments</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
 
-        <div class="w-100 d-flex flex-row-reverse mb-4 add-button-wrapper">
-          <a href='add-feature.php' class ='btn btn-primary'>ADD</a>
-        </div>
-
-
         <div class="card">
             <div class="card-body">
                 <?php
-        if (!empty($features)) {
+        if (!empty($Apartments)) {
             echo "<h1>Listing Page</h1>";
             echo "<table class='table'>";
             echo "<thead>";
             echo "<tr>";
             echo "<th scope='col'>#</th>";
-            echo "<th scope='col'>Feature</th>";
-            echo "<th scope='col'>Link</th>";
+            echo "<th scope='col'>Name</th>";
+            echo "<th scope='col'>Price</th>";
+            echo "<th scope='col'>surface</th>";
+            echo "<th scope='col'>Availability</th>";
+            echo "<th scope='col'>Bedroom</th>";
+            echo "<th scope='col'>Bathroom</th>";
             echo "<th scope='col'>Edit</th>";
             echo "<th scope='col'>Delete</th>";
             echo "</tr>";
@@ -347,15 +346,19 @@ $success_message = isset($_GET['message']) ? $_GET['message'] : '';
             echo "<tbody>";
             
             // Output each record as a table row with edit and delete buttons
-            foreach ($features as $index => $feature) {
-                $out = strlen($feature['Link']) > 50 ? substr($feature['Link'],0,50)."..." : $feature['Link'];
+            foreach ($Apartments as $index => $Apartment) {
 
                 echo "<tr>";
-                echo "<td>{$feature['ID']}</td>";
-                echo "<td>{$feature['Feature']}</td>";
-                echo "<td>{$out}</td>";
-                echo "<td><a href='feature-edit.php?id={$feature['ID']}' class ='btn btn-primary'>Edit</a></td>";
-                echo "<td><button type='button' class='btn btn-danger deleteBtn' data-bs-toggle='modal' data-bs-target='#deleteModal' data-feature-id='{$feature['ID']}'>Delete</button></td>";
+                echo "<td>{$Apartment['ID']}</td>";
+                echo "<td>{$Apartment['Name']}</td>";
+                echo "<td>{$Apartment['price']}</td>";
+                echo "<td>{$Apartment['surface']}</td>";
+                echo "<td>{$Apartment['availability']}</td>";
+                echo "<td>{$Apartment['bedroom']}</td>";
+                echo "<td>{$Apartment['bathroom']}</td>";
+
+                echo "<td><a href='apartment-edit.php?id={$Apartment['ID']}' class ='btn btn-primary'>Edit</a></td>";
+                echo "<td><button type='button' class='btn btn-danger deleteBtn' data-bs-toggle='modal' data-bs-target='#deleteModal' data-feature-id='{$Apartment['ID']}'>Delete</button></td>";
                 echo "</tr>";
             }
             

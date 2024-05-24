@@ -10,30 +10,26 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-// Fetch project details
-$projectQuery = "SELECT * FROM features";
-$projectResult = $con->query($projectQuery);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve and sanitize form data
+    $new_feature_name = mysqli_real_escape_string($con, $_POST['new_feature_name']);
+    $new_link = mysqli_real_escape_string($con, $_POST['new_link']);
 
-// Initialize $features as an empty array
-$features = [];
+    // Construct the INSERT query to add a new feature
+    $insert_query = "INSERT INTO features (Feature, Link) VALUES ('$new_feature_name', '$new_link')";
 
-// Check if query was successful
-if ($projectResult) {
-    // Fetch all rows as an associative array
-    while ($row = $projectResult->fetch_assoc()) {
-        $features[] = $row;
+    // Execute the INSERT query
+    if(mysqli_query($con, $insert_query)) {
+        // If insertion is successful, redirect back to the listing page with success message
+        header("Location: features.php?message=Feature added successfully");
+        exit();
+    } else {
+        // If insertion fails, display error message
+        $error_message = "Failed to add feature: " . mysqli_error($con);
     }
-} else {
-    // Error handling if query fails
-    $error_message = "Error fetching features: " . $con->error;
 }
-
-$con->close();
-
-$error_message = isset($_GET['error']) ? $_GET['error'] : '';
-$success_message = isset($_GET['message']) ? $_GET['message'] : '';
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -312,6 +308,7 @@ $success_message = isset($_GET['message']) ? $_GET['message'] : '';
 
     <?php require_once(__DIR__."/includes/sidebar.php"); ?>
 
+
     <main id="main" class="main">
 
         <div class="pagetitle">
@@ -324,48 +321,29 @@ $success_message = isset($_GET['message']) ? $_GET['message'] : '';
             </nav>
         </div><!-- End Page Title -->
 
-        <div class="w-100 d-flex flex-row-reverse mb-4 add-button-wrapper">
-          <a href='add-feature.php' class ='btn btn-primary'>ADD</a>
-        </div>
-
-
         <div class="card">
             <div class="card-body">
-                <?php
-        if (!empty($features)) {
-            echo "<h1>Listing Page</h1>";
-            echo "<table class='table'>";
-            echo "<thead>";
-            echo "<tr>";
-            echo "<th scope='col'>#</th>";
-            echo "<th scope='col'>Feature</th>";
-            echo "<th scope='col'>Link</th>";
-            echo "<th scope='col'>Edit</th>";
-            echo "<th scope='col'>Delete</th>";
-            echo "</tr>";
-            echo "</thead>";
-            echo "<tbody>";
-            
-            // Output each record as a table row with edit and delete buttons
-            foreach ($features as $index => $feature) {
-                $out = strlen($feature['Link']) > 50 ? substr($feature['Link'],0,50)."..." : $feature['Link'];
 
-                echo "<tr>";
-                echo "<td>{$feature['ID']}</td>";
-                echo "<td>{$feature['Feature']}</td>";
-                echo "<td>{$out}</td>";
-                echo "<td><a href='feature-edit.php?id={$feature['ID']}' class ='btn btn-primary'>Edit</a></td>";
-                echo "<td><button type='button' class='btn btn-danger deleteBtn' data-bs-toggle='modal' data-bs-target='#deleteModal' data-feature-id='{$feature['ID']}'>Delete</button></td>";
-                echo "</tr>";
-            }
-            
-            echo "</tbody>";
-            echo "</table>";
-        } else {
-            echo "No items found.";
-        }
-      ?>
+                <?php if (!empty($error_message)): ?>
+                <div><?php echo $error_message; ?></div>
+                <?php endif; ?>
 
+                <form class="row g-3" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                    <div class="col-12">
+                        <label for="new_feature_name" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="new_feature_name" name="new_feature_name"
+                            value="<?php if(isset($_POST['new_feature_name'])) echo htmlspecialchars($_POST['new_feature_name']); ?>">
+                    </div>
+                    <div class="col-12">
+                        <label for="new_link" class="form-label">Link</label>
+                        <input type="text" class="form-control" id="new_link" name="new_link"
+                            value="<?php if(isset($_POST['new_link'])) echo htmlspecialchars($_POST['new_link']); ?>">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Add Feature</button>
+                    </div>
+                </form>
+                
                 <?php if (!empty($error_message)): ?>
                 <div class="alert alert-danger" role="alert">
                     <?php echo $error_message; ?>
@@ -376,49 +354,11 @@ $success_message = isset($_GET['message']) ? $_GET['message'] : '';
                 </div>
                 <?php endif; ?>
 
+
             </div>
         </div>
 
     </main><!-- End #main -->
-
-    <!-- Delete Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete this item?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const deleteButtons = document.querySelectorAll(".deleteBtn");
-        const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
-        let deleteId = null;
-
-        deleteButtons.forEach(button => {
-            button.addEventListener("click", function() {
-                deleteId = this.getAttribute("data-feature-id");
-            });
-        });
-
-        confirmDeleteBtn.addEventListener("click", function() {
-            if (deleteId) {
-                window.location.href = `../classes/features/delete-features.php?id=${deleteId}`;
-            }
-        });
-    });
-    </script>
 
 
 

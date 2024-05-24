@@ -12,10 +12,18 @@
 
       <li class="nav-item">
         <a class="nav-link " href="features.php">
-          <i class="bi bi-grid"></i>
+          <i class=" ri-add-box-fill"></i>
           <span>Features</span>
         </a>
       </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link " href="apartments.php">
+          <i class=" ri-home-2-fill"></i>
+          <span>Apartments</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
