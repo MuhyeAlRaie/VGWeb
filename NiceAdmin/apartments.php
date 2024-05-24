@@ -417,7 +417,7 @@ $success_message = isset($_GET['message']) ? $_GET['message'] : '';
 
         confirmDeleteBtn.addEventListener("click", function() {
             if (deleteId) {
-                window.location.href = `../classes/features/delete-features.php?id=${deleteId}`;
+                window.location.href = `../classes/apartment/apartment-delete.php?id=${deleteId}`;
             }
         });
     });
