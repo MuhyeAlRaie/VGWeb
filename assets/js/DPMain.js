@@ -83,7 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchFeatures()
         .then(features => {
             // If features are successfully fetched, display them
-            // console.log(features); // For testing purposes, you can log the features data
             // Assuming features data is an array of objects with 'ID', 'Feature', and 'Link' properties
 
         })
@@ -99,6 +98,31 @@ function fetchFeatures() {
     return new Promise((resolve, reject) => {
         // Fetch data from the API endpoint
         fetch('NiceAdmin/API/GET-Features.php')
+            .then(response => {
+                // Check if response is successful
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // Parse JSON response
+                return response.json();
+            })
+            .then(data => {
+                // Resolve the Promise with the retrieved data
+                resolve(data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                // Reject the Promise with the error
+                reject(error);
+            });
+    });
+}
+
+function fetchApartments() {
+    // Return a Promise
+    return new Promise((resolve, reject) => {
+        // Fetch data from the API endpoint
+        fetch('NiceAdmin/API/GET_Apartment.php')
             .then(response => {
                 // Check if response is successful
                 if (!response.ok) {
@@ -148,43 +172,55 @@ function openSidebar(type, button) {
     button.classList.add('active');
 
     if (type === 'apartments') {
-        // Change video source and dynamically generate buttons for apartments
-        changeVideo('assets/apartmentsVid.mp4', button);
-        sidebar.innerHTML = '<div id="filter-section" class="position-relative top-20 start-50 translate-middle-x z-index-1 d-grid">' +
-            '<label for="filter-price">Price:</label>' +
-            '<input type="text" id="filter-price" placeholder="Enter price">' +
-            ' <label for="filter-surface">Surface:</label>' +
-            '<input type="text" id="filter-surface" placeholder="Enter surface">' +
-            '<label for="filter-availability">Availability:</label>' +
-            '<select id="filter-availability">' +
-            ' <option value="">All</option>' +
-            '<option value="Available">Available</option>' +
-            '<option value="Reserved">Reserved</option>' +
-            '</select>' +
-            '<button onclick="applyFilters()">Apply Filters</button>' +
-            '</div>';
-        // Loop through the apartmentData and generate buttons
-        var apartmentWrapperDiv = document.createElement('div');
-        apartmentWrapperDiv.className = 'apartment-wrapper';
-
-        // Loop through the apartmentData and generate buttons
-        for (var apartmentKey in apartmentData) {
-            if (apartmentData.hasOwnProperty(apartmentKey)) {
-                var apartmentButton = document.createElement('button');
-                apartmentButton.textContent = apartmentKey;
-                apartmentButton.onclick = (function (key) {
-                    return function () {
-                        changeVideo(apartmentData[key].video, button);
-                        showApartmentDetails(key);
-                    };
-                })(apartmentKey);
-
-                apartmentWrapperDiv.appendChild(apartmentButton);
+        fetchApartments()
+        .then(apartmentData => {
+            // Logic to handle the 'apartments' type
+            if (type === 'apartments') {
+                // Change video source and dynamically generate buttons for apartments
+                changeVideo('assets/apartmentsVid.mp4', button);
+                sidebar.innerHTML = '<div id="filter-section" class="position-relative top-20 start-50 translate-middle-x z-index-1 d-grid">' +
+                    '<label for="filter-price">Price:</label>' +
+                    '<input type="text" id="filter-price" placeholder="Enter price">' +
+                    ' <label for="filter-surface">Surface:</label>' +
+                    '<input type="text" id="filter-surface" placeholder="Enter surface">' +
+                    '<label for="filter-availability">Availability:</label>' +
+                    '<select id="filter-availability">' +
+                    ' <option value="">All</option>' +
+                    '<option value="Available">Available</option>' +
+                    '<option value="Reserved">Reserved</option>' +
+                    '</select>' +
+                    '<button onclick="applyFilters()">Apply Filters</button>' +
+                    '</div>';
+    
+                // Loop through the apartmentData and generate buttons
+                var apartmentWrapperDiv = document.createElement('div');
+                apartmentWrapperDiv.className = 'apartment-wrapper';
+    
+                // Loop through the apartmentData and generate buttons
+                for (var i = 0; i < apartmentData.length; i++) {
+                    var apartment = apartmentData[i];
+                    var apartmentName = apartment.Name;
+    
+                    var apartmentButton = document.createElement('button');
+                    apartmentButton.textContent = apartmentName;
+                    apartmentButton.onclick = (function (apartmentData) {
+                        return function () {
+                            changeVideo(apartmentData.video, button);
+                            showApartmentDetails(apartmentData.ID);
+                        };
+                    })(apartment);
+    
+                    apartmentWrapperDiv.appendChild(apartmentButton);
+                }
+    
+                // Append the wrapper div with apartment buttons to the sidebar
+                sidebar.appendChild(apartmentWrapperDiv);
             }
-        }
-
-        // Append the wrapper div with apartment buttons to the sidebar
-        sidebar.appendChild(apartmentWrapperDiv);
+        })
+        .catch(error => {
+            // Handle errors if any
+            console.error('Error fetching apartment data:', error);
+        });
     } else if (type === 'home') {
         // Change video source and add custom content for Home
         changeVideo('assets/HomeVid.mp4', button);
@@ -219,17 +255,14 @@ function openSidebar(type, button) {
                 var wrapperDiv = document.createElement('div');
                 wrapperDiv.className = 'Feature-wrapper';
 
-                console.log(features.length);
                 Object.keys(features).forEach(function(key) {
-                    console.log(features);
-                    console.log(key);
+
                     var featureButton = document.createElement('button');
                     featureButton.textContent = features[key]['Feature'];
                     featureButton.onclick = function () {
                         changeVideo('assets/Bgvid.mp4', button);
                         // Handle feature click
                         // You can customize this function to display more information about the feature
-                        console.log('Feature Clicked: ' + features[key]);
                     };
             
                     // Append each button to the wrapper div
@@ -245,47 +278,58 @@ function openSidebar(type, button) {
             });
 
     } else if (type === 'contact') {
-        // Change video source and add buttons for features
-        changeVideo('assets/Bgvid.mp4', button);
+// Change video source and add buttons for features
+changeVideo('assets/Bgvid.mp4', button);
 
-        // Create a wrapper div for contact information
-        var contactWrapperDiv = document.createElement('div');
-        contactWrapperDiv.className = 'contact-wrapper';
+// Create a wrapper div for contact information
+var contactWrapperDiv = document.createElement('div');
+contactWrapperDiv.className = 'contact-wrapper';
 
-        // Set innerHTML for the wrapper div
-        contactWrapperDiv.innerHTML = '<h3 class="contact">Contact us</h3>' +
-            '<div class="row input-container">' +
-            '<div class="col-xs-12">' +
-            '<div class="styled-input wide">' +
-            '<input type="text" required />' +
-            '<label>Name</label>' +
-            '</div>' +
-            '</div>' +
-            '<div class="col-xs-12">' +
-            '<div class="styled-input">' +
-            '<input type="text" required />' +
-            '<label>Email</label>' +
-            '</div>' +
-            '</div>' +
-            '<div class="col-xs-12">' +
-            '<div class="styled-input">' +
-            '<input type="text" required />' +
-            '<label>Phone Number</label>' +
-            '</div>' +
-            '</div>' +
-            '<div class="col-xs-12">' +
-            '<div class="styled-input wide">' +
-            '<textarea required></textarea>' +
-            '<label>Message</label>' +
-            '</div>' +
-            '</div>' +
-            '<div class="col-xs-12">' +
-            '<a href="mailto:muhye.alraie@gmail.com" class="btn-lrg submit-btn">Send Message</a>' +
-            '</div>' +
-            '</div>';
+// Set innerHTML for the wrapper div with the form element
+contactWrapperDiv.innerHTML = `
+  <form
+    action="https://formspree.io/f/mjvnqbzz"
+    method="POST"
+  >
+    <h3>Contact us</h3>
+    <div class="row input-container">
+      <div class="col-xs-12">
+        <div class="styled-input wide">
+          <input type="text" name="Name" required />
+          <label>Name</label>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <div class="styled-input">
+          <input type="email" name="Email" required />
+          <label>Email</label>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <div class="styled-input">
+          <input type="text" name="Phone Number" required />
+          <label>Phone Number</label>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <div class="styled-input wide">
+          <textarea name="Message" required></textarea>
+          <label>Message</label>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <button type="submit" class="btn-lrg submit-btn">Send Message</button>
+      </div>
+    </div>
+  </form>
+`;
 
-        // Append the wrapper div with contact information to the sidebar
-        sidebar.appendChild(contactWrapperDiv);
+// Append the wrapper div with contact form to the sidebar
+sidebar.appendChild(contactWrapperDiv);
+
+// Show sidebar
+sidebar.style.display = 'block';
+
     }
     sidebar.style.display = 'block';
 }
@@ -298,127 +342,165 @@ function showApartmentDetails(apartmentKey) {
     var apartmentAvailability = document.getElementById('apartment-availability');
     var apartmentBedroom = document.getElementById('apartment-bedroom');
     var apartmentBathroom = document.getElementById('apartment-bathroom');
-
+  
     var filterSection = document.getElementById('filter-section');
     var sidebar = document.getElementById('sidebar');
-
-    // Get the apartment details from the JSON data
-    var apartmentDetails = apartmentData[apartmentKey];
-
-    // Set apartment details
-    apartmentImage.src = apartmentDetails.image;
-    apartmentPrice.textContent = 'Price: $' + apartmentDetails.price.toLocaleString(); // Format price
-    apartmentSurface.textContent = 'Surface: ' + apartmentDetails.surface + ' m²';
-    apartmentAvailability.textContent = 'Availability: ' + apartmentDetails.availability;
-    apartmentBedroom.textContent = 'Bedroom: ' + apartmentDetails.bedroom;
-    apartmentBathroom.textContent = 'Bathroom: ' + apartmentDetails.bathroom;
-
-    // Show the filter section
-    filterSection.style.display = 'flex';
-
-    // Hide the second sidebar
-    secondSidebar.style.display = 'block';
-
-    // Hide the sidebar
-    sidebar.style.display = 'block';
-
-    // Check if there is an iframe source for the virtual tour
-    if (apartmentDetails.iframeSrc) {
-        // Remove the previous "Virtual Tour" button if it exists
-        var previousVirtualTourButton = document.getElementById('virtualTourButton');
-        if (previousVirtualTourButton) {
-            secondSidebar.removeChild(previousVirtualTourButton);
+  
+    // Fetch apartment details from the API
+    fetchApartments()
+      .then(data => {
+        // Find the apartment details by matching the key
+        const apartmentDetails = data.find(apartment => apartment.ID === apartmentKey);
+  
+        if (!apartmentDetails) {
+          console.error(`Apartment "${apartmentKey}" not found in API response`);
+          return; // Handle the case where the apartment key is not found
         }
-
-        // Create a "Virtual Tour" button
-        var virtualTourButton = document.createElement('button');
-        virtualTourButton.id = 'virtualTourButton';
-        virtualTourButton.textContent = 'Virtual Tour';
-        virtualTourButton.onclick = function () {
+  
+        // Set apartment details (assuming property names match your API response)
+        apartmentImage.src = apartmentDetails.iframeSrc || ""; // Use iframeSrc for image if available
+        apartmentPrice.textContent = 'Price: $' + apartmentDetails.price.toLocaleString(); // Format price
+        apartmentSurface.textContent = 'Surface: ' + apartmentDetails.surface + ' m²';
+        apartmentAvailability.textContent = 'Availability: ' + apartmentDetails.availability;
+        apartmentBedroom.textContent = 'Bedroom: ' + apartmentDetails.bedroom;
+        apartmentBathroom.textContent = 'Bathroom: ' + apartmentDetails.bathroom;
+  
+        // Create a wrapper div for apartments (used by updateSidebar)
+        var apartmentWrapper = document.createElement('div');
+        apartmentWrapper.classList = 'apartment-wrapper';
+  
+        // Show the filter section
+        filterSection.style.display = 'flex';
+  
+        // Clear previous content in the sidebar (handled by updateSidebar)
+        sidebar.innerHTML = '';
+  
+        // Create and append filter section (handled by updateSidebar)
+        // ... (code for creating and appending filter section is already in updateSidebar)
+  
+        // Append the apartmentWrapper to the sidebar (handled by updateSidebar)
+        // ... (code for appending apartmentWrapper is already in updateSidebar)
+  
+        // Create a button for each apartment in the sidebar (handled by updateSidebar)
+        // ... (code for creating apartment buttons is already in updateSidebar)
+  
+        // Hide the second sidebar
+        secondSidebar.style.display = 'block';
+  
+        // Hide the sidebar (handled by updateSidebar)
+        // ... (code for hiding sidebar is already in updateSidebar)
+  
+        // Check if there is an iframe source for the virtual tour
+        if (apartmentDetails.iframeSrc) {
+          // Remove the previous "Virtual Tour" button if it exists
+          var previousVirtualTourButton = document.getElementById('virtualTourButton');
+          if (previousVirtualTourButton) {
+            secondSidebar.removeChild(previousVirtualTourButton);
+          }
+  
+          // Create a "Virtual Tour" button
+          var virtualTourButton = document.createElement('button');
+          virtualTourButton.id = 'virtualTourButton';
+          virtualTourButton.textContent = 'Virtual Tour';
+          virtualTourButton.onclick = function () {
             openIframe(apartmentDetails.iframeSrc);
-        };
+          };
+  
+          // Append the "Virtual Tour" button to the second sidebar
+          secondSidebar.appendChild(virtualTourButton);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching apartment details:', error);
+        // Handle errors gracefully, e.g., display an error message to the user
+      });
+  }
 
-        // Append the "Virtual Tour" button to the second sidebar
-        secondSidebar.appendChild(virtualTourButton);
-    }
-
-}
-
-
-// Function to apply filters and update the list of apartments
-function applyFilters() {
+  function applyFilters() {
     var filterPrice = parseFloat(document.getElementById('filter-price').value) || 0;
     var filterSurface = parseFloat(document.getElementById('filter-surface').value) || 0;
     var filterAvailability = document.getElementById('filter-availability').value;
-
+  
     var filteredApartments = {};
-
-    // Apply filters to the apartment data
-    for (var apartmentKey in apartmentData) {
-        if (apartmentData.hasOwnProperty(apartmentKey)) {
-            var apartment = apartmentData[apartmentKey];
-            if (
-                (filterPrice === 0 || apartment.price <= filterPrice) &&
-                (filterSurface === 0 || apartment.surface <= filterSurface) &&
-                (filterAvailability === "" || apartment.availability === filterAvailability)
-            ) {
-                filteredApartments[apartmentKey] = apartment;
-            }
+  
+    // Call fetchApartments to get the dynamic data
+    fetchApartments()
+      .then(data => {
+        // Apply filters to the fetched data
+        for (const apartment of data) {
+            console.log(apartment.availability)
+          const isAvailable = apartment.availability === 1; // Check for availability (1 = available)
+  
+          if (
+            (filterPrice === 0 || apartment.price <= filterPrice) &&
+            (filterSurface === 0 || apartment.surface <= filterSurface) &&
+            (filterAvailability === "" || (filterAvailability === "Available" && isAvailable) || (filterAvailability === "Reserved" && !isAvailable))
+          ) {
+            filteredApartments[apartment.ID || apartmentKey] = apartment; // Use ID or apartmentKey for filtering
+          }
         }
-    }
-
-    // Update the sidebar with filtered apartments
-    updateSidebar(filteredApartments);
-}
-
-// Function to update the sidebar with the filtered apartments
-function updateSidebar(apartments) {
+  
+        // Update the sidebar with filtered apartments
+        updateSidebar(filteredApartments);
+      })
+      .catch(error => {
+        console.error('Error fetching apartment details:', error);
+        // Handle errors gracefully, e.g., display an error message to the user
+      });
+  }
+  
+  function updateSidebar(apartments) {
     var sidebar = document.getElementById('sidebar');
-
+  
     // Create a wrapper div for apartments
     var apartmentWrapper = document.createElement('div');
     apartmentWrapper.classList = 'apartment-wrapper';
-
-    // Clear previous content
+  
+    // Clear previous content in the sidebar
     sidebar.innerHTML = '';
-
+  
     // Create and append filter section
     var filterSection = document.createElement('div');
     filterSection.id = 'filter-section';
     filterSection.className = 'position-relative top-20 start-50 translate-middle-x z-index-1 d-grid';
-
     filterSection.innerHTML =
-        '<label for="filter-price">Price:</label>' +
-        '<input type="text" id="filter-price" placeholder="Enter price">' +
-        '<label for="filter-surface">Surface:</label>' +
-        '<input type="text" id="filter-surface" placeholder="Enter surface">' +
-        '<label for="filter-availability">Availability:</label>' +
-        '<select id="filter-availability">' +
-        '<option value="">All</option>' +
-        '<option value="Available">Available</option>' +
-        '<option value="Reserved">Reserved</option>' +
-        '</select>' +
-        '<button onclick="applyFilters()">Apply Filters</button>';
-
+      '<label for="filter-price">Price:</label>' +
+      '<input type="text" id="filter-price" placeholder="Enter price">' +
+      '<label for="filter-surface">Surface:</label>' +
+      '<input type="text" id="filter-surface" placeholder="Enter surface">' +
+      '<label for="filter-availability">Availability:</label>' +
+      '<select id="filter-availability">' +
+      '<option value="">All</option>' +
+      '<option value="Available">Available</option>' +
+      '<option value="Reserved">Reserved</option>' +
+      '</select>' +
+      '<button onclick="applyFilters()">Apply Filters</button>';
+  
     sidebar.appendChild(filterSection);
-
+  
     // Append the apartmentWrapper to the sidebar
     sidebar.appendChild(apartmentWrapper);
-
+  
     for (var apartmentKey in apartments) {
-        if (apartments.hasOwnProperty(apartmentKey)) {
-            var apartmentButton = document.createElement('button');
-            apartmentButton.textContent = apartmentKey;
-            apartmentButton.onclick = (function (key) {
-                return function () {
-                    changeVideo(apartments[key].video, apartmentButton);
-                    showApartmentDetails(key);
-                };
-            })(apartmentKey);
-            apartmentWrapper.appendChild(apartmentButton);
-        }
+      if (apartments.hasOwnProperty(apartmentKey)) {
+        var apartmentButton = document.createElement('button');
+  
+        // Use "name" property from the API response to display apartment name
+        apartmentButton.textContent = apartments[apartmentKey].Name || apartmentKey; // Use name if available, fallback to ID
+
+        apartmentButton.onclick = (function (key) {
+          return function () {
+            changeVideo(apartments[key].video, apartmentButton);
+            showApartmentDetails(key);
+          };
+        })(apartmentKey);
+  
+        apartmentWrapper.appendChild(apartmentButton);
+      }
     }
-}
+  }
+  
+  
 // function openIframe() {
 //     // Create an iframe element
 //     var iframe = document.createElement('iframe');

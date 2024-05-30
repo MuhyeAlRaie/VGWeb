@@ -324,6 +324,10 @@ $success_message = isset($_GET['message']) ? $_GET['message'] : '';
             </nav>
         </div><!-- End Page Title -->
 
+        <div class="w-100 d-flex flex-row-reverse mb-4 add-button-wrapper">
+          <a href='add-apartment.php' class ='btn btn-primary'>ADD</a>
+        </div>
+
         <div class="card">
             <div class="card-body">
                 <?php

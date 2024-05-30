@@ -384,8 +384,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div><?php echo $error_message; ?></div>
                 <?php endif; ?>
 
-                <form class="row g-3" method="post"  enctype="multipart/form-data"
-                    action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=" . $id; ?>" >
+                <form class="row g-3" method="post" enctype="multipart/form-data"
+                    action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?id=" . $id; ?>">
                     <div class="col-12">
                         <label for="new_feature_name" class="form-label">Name</label>
                         <input type="text" class="form-control" id="new_apartment_name" name="new_apartment_name"
@@ -433,9 +433,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="col-6">
                         <label for="image" class="form-label">Image</label>
                         <input class="form-control" type="file" id="image" name="image">
+                        <?php if (!empty($apartment['image'])): ?>
                         <img src="<?php echo 'uploads/' . $apartment['image']; ?>" alt="Apartment Image">
-
+                        <?php endif; ?>
                     </div>
+
                     <div class="col-12">
                         <label for="inputPassword" class="col-sm-2 col-form-label">iframeSrc</label>
                         <div class="col-sm-10">
