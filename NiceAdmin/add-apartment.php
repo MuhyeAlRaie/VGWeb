@@ -10,30 +10,80 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-// Fetch project details
-$projectQuery = "SELECT * FROM apartment";
-$projectResult = $con->query($projectQuery);
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve and sanitize form data
+    $new_apartment_name = mysqli_real_escape_string($con, $_POST['new_apartment_name']);
+    $new_price = mysqli_real_escape_string($con, $_POST['price']);
+    $new_surface = mysqli_real_escape_string($con, $_POST['surface']);
+    $new_availability = isset($_POST['availability']) ? (int)$_POST['availability'] : 0; // Assuming availability is a boolean field
+    $new_bedroom = mysqli_real_escape_string($con, $_POST['bedroom']);
+    $new_bathroom = mysqli_real_escape_string($con, $_POST['bathroom']);
+    $new_iframeSrc = mysqli_real_escape_string($con, $_POST['iframeSrc']);
 
-// Initialize $features as an empty array
-$Apartments = [];
 
-// Check if query was successful
-if ($projectResult) {
-    // Fetch all rows as an associative array
-    while ($row = $projectResult->fetch_assoc()) {
-        $Apartments[] = $row;
+    // Check if an image was uploaded
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $image = $_FILES['image']['tmp_name'];
+        $imgContent = addslashes(file_get_contents($image));
+
+        // Move uploaded file to a directory on your server
+        $target_dir = __DIR__ . "/uploads/"; // Set the target directory path relative to the current PHP script
+        $target_file = $target_dir . basename($_FILES["image"]["name"]);
+
+        // Construct the INSERT query to add a new apartment with image path
+        $insert_query = "INSERT INTO apartment (
+            Name,
+            price,
+            surface,
+            availability,
+            bedroom,
+            bathroom,
+            iframeSrc,
+            image
+        ) VALUES (
+            '$new_apartment_name',
+            '$new_price',
+            '$new_surface',
+            '$new_availability',
+            '$new_bedroom',
+            '$new_bathroom',
+            '$new_iframeSrc',
+            '$target_file'
+        )";
+    } else {
+        // Construct the INSERT query to add a new apartment without image
+        $insert_query = "INSERT INTO apartment (
+            Name,
+            price,
+            surface,
+            availability,
+            bedroom,
+            bathroom,
+            iframeSrc
+        ) VALUES (
+            '$new_apartment_name',
+            '$new_price',
+            '$new_surface',
+            '$new_availability',
+            '$new_bedroom',
+            '$new_bathroom',
+            '$new_iframeSrc'
+        )";
     }
-} else {
-    // Error handling if query fails
-    $error_message = "Error fetching features: " . $con->error;
+
+    // Execute the INSERT query
+    if (mysqli_query($con, $insert_query)) {
+        // If insertion is successful, redirect back to the listing page with success message
+        header("Location: apartments.php?message=Apartment added successfully");
+        exit();
+    } else {
+        // If insertion fails, display error message
+        $error_message = "Failed to add apartment: " . mysqli_error($con);
+    }
 }
-
-$con->close();
-
-$error_message = isset($_GET['error']) ? $_GET['error'] : '';
-$success_message = isset($_GET['message']) ? $_GET['message'] : '';
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -312,72 +362,81 @@ $success_message = isset($_GET['message']) ? $_GET['message'] : '';
 
     <?php require_once(__DIR__."/includes/sidebar.php"); ?>
 
+
     <main id="main" class="main">
 
         <div class="pagetitle">
-            <h1>Apartments</h1>
+            <h1>Apartment</h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item active">Apartments</li>
+                    <li class="breadcrumb-item active">Apartment</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
 
-        <div class="w-100 d-flex flex-row-reverse mb-4 add-button-wrapper">
-            <a href='add-apartment.php' class='btn btn-primary'>ADD</a>
-        </div>
-
         <div class="card">
             <div class="card-body">
-                <?php
-        if (!empty($Apartments)) {
-            echo "<h1>Listing Page</h1>";
-            echo "<table class='table'>";
-            echo "<thead>";
-            echo "<tr>";
-            echo "<th scope='col'>#</th>";
-            echo "<th scope='col'>Name</th>";
-            echo "<th scope='col'>Price</th>";
-            echo "<th scope='col'>surface</th>";
-            echo "<th scope='col'>Availability</th>";
-            echo "<th scope='col'>Bedroom</th>";
-            echo "<th scope='col'>Bathroom</th>";
-            echo "<th scope='col'>Edit</th>";
-            echo "<th scope='col'>Delete</th>";
-            echo "</tr>";
-            echo "</thead>";
-            echo "<tbody>";
-            
-            // Output each record as a table row with edit and delete buttons
-            foreach ($Apartments as $index => $Apartment) {
 
-                echo "<tr>";
-                echo "<td>{$Apartment['ID']}</td>";
-                echo "<td>{$Apartment['Name']}</td>";
-                echo "<td>{$Apartment['price']}</td>";
-                echo "<td>{$Apartment['surface']}</td>";
-                // Use a conditional statement to print "Yes" or "No" based on availability
-                if ($Apartment['availability'] == 1) {
-                    echo "<td>Yes</td>";
-                } else {
-                    echo "<td>No</td>";
-                }
-                echo "<td>{$Apartment['bedroom']}</td>";
-                echo "<td>{$Apartment['bathroom']}</td>";
+                <?php if (!empty($error_message)): ?>
+                <div><?php echo $error_message; ?></div>
+                <?php endif; ?>
 
-                echo "<td><a href='apartment-edit.php?id={$Apartment['ID']}' class ='btn btn-primary'>Edit</a></td>";
-                echo "<td><button type='button' class='btn btn-danger deleteBtn' data-bs-toggle='modal' data-bs-target='#deleteModal' data-feature-id='{$Apartment['ID']}'>Delete</button></td>";
-                echo "</tr>";
-            }
-            
-            echo "</tbody>";
-            echo "</table>";
-        } else {
-            echo "No items found.";
-        }
-      ?>
-
+                <form class="row g-3" method="post" enctype="multipart/form-data"
+                    action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                    <div class="col-12">
+                        <label for="new_apartment_name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="new_apartment_name" name="new_apartment_name"
+                            required>
+                    </div>
+                    <div class="col-6">
+                        <label for="price" class="form-label">Price</label>
+                        <input type="text" class="form-control" id="price" name="price" required>
+                    </div>
+                    <div class="col-6">
+                        <label for="surface" class="form-label">Surface</label>
+                        <input type="text" class="form-control" id="surface" name="surface" required>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Availability</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="availability" id="available" value="1"
+                                checked>
+                            <label class="form-check-label" for="available">
+                                Available
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="availability" id="not_available"
+                                value="0">
+                            <label class="form-check-label" for="not_available">
+                                Not Available
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label for="bedroom" class="form-label">Bedroom</label>
+                        <input type="text" class="form-control" id="bedroom" name="bedroom" required>
+                    </div>
+                    <div class="col-6">
+                        <label for="bathroom" class="form-label">Bathroom</label>
+                        <input type="text" class="form-control" id="bathroom" name="bathroom" required>
+                    </div>
+                    <div class="col-6">
+                        <label for="image" class="form-label">Image</label>
+                        <input class="form-control" type="file" id="image" name="image">
+                    </div>
+                    <div class="col-12">
+                        <label for="iframeSrc" class="col-sm-2 col-form-label">iframeSrc</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" id="iframeSrc" name="iframeSrc"
+                                style="height: 100px"></textarea>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Add Apartment</button>
+                    </div>
+                </form>
                 <?php if (!empty($error_message)): ?>
                 <div class="alert alert-danger" role="alert">
                     <?php echo $error_message; ?>
@@ -388,49 +447,11 @@ $success_message = isset($_GET['message']) ? $_GET['message'] : '';
                 </div>
                 <?php endif; ?>
 
+
             </div>
         </div>
 
     </main><!-- End #main -->
-
-    <!-- Delete Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete this item?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const deleteButtons = document.querySelectorAll(".deleteBtn");
-        const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
-        let deleteId = null;
-
-        deleteButtons.forEach(button => {
-            button.addEventListener("click", function() {
-                deleteId = this.getAttribute("data-feature-id");
-            });
-        });
-
-        confirmDeleteBtn.addEventListener("click", function() {
-            if (deleteId) {
-                window.location.href = `../classes/apartment/apartment-delete.php?id=${deleteId}`;
-            }
-        });
-    });
-    </script>
 
 
 
